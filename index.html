@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -290,7 +290,7 @@ mark{background:color-mix(in srgb,var(--p2) 35%,transparent);color:inherit;borde
     <div class="acts">
       <button class="btn" onclick="shopList()">🛒 <span class="lblx" data-i="shop"></span><span class="cnt" id="shopN"></span></button>
       <select id="langSel" onchange="setLang(this.value)" aria-label="Language">
-        <option value="tr">🇹🇷 Türkçe</option><option value="en">🇬🇧 English</option><option value="de">🇩🇪 Deutsch</option>
+        <option value="en">🇬🇧 English</option><option value="tr">🇹🇷 Türkçe</option><option value="de">🇩🇪 Deutsch</option>
       </select>
       <button class="btn icon" id="thm" onclick="toggleTheme()" data-it="theme">☀️</button>
       <button class="btn icon" onclick="openSettings()" data-it="settings">⚙️</button>
@@ -350,7 +350,7 @@ backupDone:'Yedek indirildi',importQ:'{n} parça yüklenecek. Mevcut liste deği
 storageFull:'Depolama dolu! Bazı yüklenen fotoğrafları kaldır veya yedek al.',usage:'Kullanılan alan: {u}',
 shortcuts:'Kısayollar:  /  ara  ·  N  yeni parça  ·  Esc  kapat  ·  Shift + (+/−)  10’ar değiştir',gridView:'Kart görünümü',listView:'Liste görünümü',
 c_cap:'Kapasitör',c_res:'Direnç',c_tr:'Transistör',c_ic:'Entegre (IC)',c_led:'LED / Ekran',c_sen:'Sensör',c_mod:'Modül / Kart',c_cab:'Kablo / Konnektör',c_pwr:'Güç',c_mot:'Motor / Röle',c_tool:'Alet / Ekipman',c_oth:'Diğer',
-d1:'ATmega328P tabanlı geliştirme kartı. 14 dijital I/O, 6 analog giriş, USB ile programlama.',d2:'WiFi + Bluetooth destekli çift çekirdekli mikrodenetleyici.',d3:'1/4W karbon film, %5 tolerans. Pull-up / pull-down için.',d4:'Dijital sıcaklık (-40~80°C) ve nem (%0-100) sensörü.',d5:'Standart 5mm kırmızı LED, 20mA.',d6:'Mesafe ölçer, 2–400 cm, 5V.'},
+d1:'ATmega328P tabanlı geliştirme kartı. 14 dijital I/O, 6 analog giriş, USB ile programlama.',d2:'WiFi + Bluetooth destekli çift çekirdekli mikrodenetleyici.',d3:'1/4W karbon film, %5 tolerans. Pull-up / pull-down için.',d4:'Dijital sıcaklık (-40~80°C) ve nem (%0-100) sensörü.',d5:'Standart 5mm kırmızı LED, 20mA.',d6:'Mesafe ölçer, 2–400 cm, 5V.',l1:'Raf 1',l2:'Çekmece A',l3:'Kutu 3',l4:'Çekmece B'},
 en:{app:'Component Vault',tagline:'Count, find and restock your parts',shop:'Shopping list',newPart:'New part',searchPh:'Search parts, categories, locations, notes…',
 allStock:'All stock',st_ok:'In stock',st_low:'Low stock',st_out:'Out of stock',favs:'⭐ Favorites',
 sort_new:'Newest',sort_upd:'Recently updated',sort_az:'Name A–Z',sort_qa:'Qty: low → high',sort_qd:'Qty: high → low',sort_val:'Stock value (high)',
@@ -380,7 +380,7 @@ backupDone:'Backup downloaded',importQ:'Load {n} parts and replace the current l
 storageFull:'Storage full! Remove some uploaded photos or export a backup.',usage:'Storage used: {u}',
 shortcuts:'Shortcuts:  /  search  ·  N  new part  ·  Esc  close  ·  Shift + (+/−)  change by 10',gridView:'Card view',listView:'List view',
 c_cap:'Capacitor',c_res:'Resistor',c_tr:'Transistor',c_ic:'IC / Chip',c_led:'LED / Display',c_sen:'Sensor',c_mod:'Module / Board',c_cab:'Cable / Connector',c_pwr:'Power',c_mot:'Motor / Relay',c_tool:'Tool / Equipment',c_oth:'Other',
-d1:'ATmega328P development board. 14 digital I/O, 6 analog inputs, USB programming.',d2:'Dual-core microcontroller with WiFi + Bluetooth.',d3:'1/4W carbon film, 5% tolerance. For pull-up / pull-down.',d4:'Digital temperature (-40~80°C) and humidity (0-100%) sensor.',d5:'Standard 5mm red LED, 20mA.',d6:'Distance sensor, 2–400 cm, 5V.'},
+d1:'ATmega328P development board. 14 digital I/O, 6 analog inputs, USB programming.',d2:'Dual-core microcontroller with WiFi + Bluetooth.',d3:'1/4W carbon film, 5% tolerance. For pull-up / pull-down.',d4:'Digital temperature (-40~80°C) and humidity (0-100%) sensor.',d5:'Standard 5mm red LED, 20mA.',d6:'Distance sensor, 2–400 cm, 5V.',l1:'Shelf 1',l2:'Drawer A',l3:'Box 3',l4:'Drawer B'},
 de:{app:'Bauteil-Lager',tagline:'Teile zählen, finden und nachkaufen',shop:'Einkaufsliste',newPart:'Neues Teil',searchPh:'Teile, Kategorien, Orte, Notizen suchen…',
 allStock:'Alle Bestände',st_ok:'Vorrätig',st_low:'Knapp',st_out:'Leer',favs:'⭐ Favoriten',
 sort_new:'Neueste',sort_upd:'Zuletzt geändert',sort_az:'Name A–Z',sort_qa:'Menge: aufsteigend',sort_qd:'Menge: absteigend',sort_val:'Lagerwert (hoch)',
@@ -410,7 +410,7 @@ backupDone:'Backup heruntergeladen',importQ:'{n} Teile laden und aktuelle Liste 
 storageFull:'Speicher voll! Hochgeladene Fotos entfernen oder Backup erstellen.',usage:'Belegter Speicher: {u}',
 shortcuts:'Tastenkürzel:  /  Suche  ·  N  neues Teil  ·  Esc  schließen  ·  Shift + (+/−)  in 10er-Schritten',gridView:'Kartenansicht',listView:'Listenansicht',
 c_cap:'Kondensator',c_res:'Widerstand',c_tr:'Transistor',c_ic:'IC / Chip',c_led:'LED / Display',c_sen:'Sensor',c_mod:'Modul / Board',c_cab:'Kabel / Stecker',c_pwr:'Stromversorgung',c_mot:'Motor / Relais',c_tool:'Werkzeug',c_oth:'Sonstiges',
-d1:'Entwicklungsboard mit ATmega328P. 14 digitale I/O, 6 analoge Eingänge, USB-Programmierung.',d2:'Dual-Core-Mikrocontroller mit WLAN + Bluetooth.',d3:'1/4 W Kohleschicht, 5 % Toleranz. Für Pull-up / Pull-down.',d4:'Digitaler Temperatur- (-40~80 °C) und Feuchtesensor (0-100 %).',d5:'Standard-5-mm-LED rot, 20 mA.',d6:'Abstandssensor, 2–400 cm, 5 V.'}
+d1:'Entwicklungsboard mit ATmega328P. 14 digitale I/O, 6 analoge Eingänge, USB-Programmierung.',d2:'Dual-Core-Mikrocontroller mit WLAN + Bluetooth.',d3:'1/4 W Kohleschicht, 5 % Toleranz. Für Pull-up / Pull-down.',d4:'Digitaler Temperatur- (-40~80 °C) und Feuchtesensor (0-100 %).',d5:'Standard-5-mm-LED rot, 20 mA.',d6:'Abstandssensor, 2–400 cm, 5 V.',l1:'Regal 1',l2:'Schublade A',l3:'Box 3',l4:'Schublade B'}
 };
 const LOC={tr:'tr-TR',en:'en-US',de:'de-DE'};
 const CURS={TRY:'₺',USD:'$',EUR:'€',GBP:'£'};
@@ -465,16 +465,15 @@ function migrate(i,n){
     noimg:i.noimg?1:0,hist:Array.isArray(i.hist)?i.hist.slice(0,25):[],upd:+i.upd||+i.id||0};
 }
 function demo(){const n=Date.now();return[
- ['Arduino Uno R3','mod',3,1,'Raf 1',320,'d1'],['ESP32 DevKit','mod',2,2,'Raf 1',180,'d2'],['10kΩ Resistor','res',120,20,'Çekmece A',.3,'d3'],
- ['DHT22','sen',1,2,'Kutu 3',95,'d4'],['HC-SR04','sen',4,1,'Kutu 3',45,'d6'],['5mm LED','led',0,10,'Çekmece B',1.5,'d5']
-].map(([name,cat,qty,low,loc,price,d],k)=>migrate({id:n-k*1000,name,cat,qty,low,loc,price,desc:t(d)},k))}
+ ['Arduino Uno R3','mod',3,1,'l1',320,'d1'],['ESP32 DevKit','mod',2,2,'l1',180,'d2'],['10kΩ Resistor','res',120,20,'l2',.3,'d3'],
+ ['DHT22','sen',1,2,'l3',95,'d4'],['HC-SR04','sen',4,1,'l3',45,'d6'],['5mm LED','led',0,10,'l4',1.5,'d5']
+].map(([name,cat,qty,low,loc,price,d],k)=>migrate({id:n-k*1000,name,cat,qty,low,loc:t(loc),price,desc:t(d)},k))}
 function load(){
-  lang=ls.get(K_LANG)||((navigator.language||'').startsWith('de')?'de':(navigator.language||'').startsWith('en')?'en':'tr');
+  /* URL ile ayar: ?lang=tr&theme=light&add=ESP32 */
+  const P=new URLSearchParams(location.search);
+  lang=I18N[P.get('lang')]?P.get('lang'):I18N[ls.get(K_LANG)]?ls.get(K_LANG):'en'; /* varsayılan dil: İngilizce */
   cur=ls.get(K_CUR)||'TRY';view=ls.get(K_VIEW)||'grid';
   try{const d=ls.get(K_DATA);items=d?JSON.parse(d).map(migrate):demo()}catch(e){items=demo()}
-  /* URL ile ayar: ?lang=en&theme=light&add=ESP32 */
-  const P=new URLSearchParams(location.search);
-  if(I18N[P.get('lang')])lang=P.get('lang');
   setTheme(['dark','light'].includes(P.get('theme'))?P.get('theme'):ls.get(K_THEME)||'dark',true);
   applyStatic();render();autoFill();
   if(P.get('add'))openForm(null,P.get('add'));
@@ -694,7 +693,7 @@ function openSettings(){
   const th=document.documentElement.dataset.theme,sz=(ls.get(K_DATA)||'').length*2,lim=5*1024*1024;
   const fmt=b=>b>1048576?(b/1048576).toFixed(2)+' MB':Math.ceil(b/1024)+' KB';
   showM(`${mhead('⚙️ '+t('settings'))}<div class="set">
-   <div class="row"><div class="grp" style="flex:1"><div class="lbl">🌐 ${t('language')}</div><select onchange="setLang(this.value)">${[['tr','🇹🇷 Türkçe'],['en','🇬🇧 English'],['de','🇩🇪 Deutsch']].map(([v,l])=>`<option value="${v}"${v===lang?' selected':''}>${l}</option>`).join('')}</select></div>
+   <div class="row"><div class="grp" style="flex:1"><div class="lbl">🌐 ${t('language')}</div><select onchange="setLang(this.value)">${[['en','🇬🇧 English'],['tr','🇹🇷 Türkçe'],['de','🇩🇪 Deutsch']].map(([v,l])=>`<option value="${v}"${v===lang?' selected':''}>${l}</option>`).join('')}</select></div>
    <div class="grp" style="flex:1"><div class="lbl">💱 ${t('currency')}</div><select onchange="cur=this.value;ls.set(K_CUR,cur);render();openSettings()">${Object.entries(CURS).map(([c,s])=>`<option value="${c}"${c===cur?' selected':''}>${s} ${c}</option>`).join('')}</select></div></div>
    <div class="grp"><div class="lbl">🎨 ${t('theme')}</div><div class="seg" style="display:inline-flex"><button class="${th==='dark'?'on':''}" style="width:auto;padding:0 14px" onclick="setTheme('dark');openSettings()">${t('dark')}</button><button class="${th==='light'?'on':''}" style="width:auto;padding:0 14px" onclick="setTheme('light');openSettings()">${t('light')}</button></div></div>
    <div class="grp"><div class="lbl">💾 ${t('data')}</div><div class="btns">

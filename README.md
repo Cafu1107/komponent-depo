@@ -12,14 +12,14 @@
 </p>
 
 <p>
-  🇹🇷 Türkçe &nbsp;·&nbsp; 🇬🇧 English &nbsp;·&nbsp; 🇩🇪 Deutsch
+  🇬🇧 <b>English</b> (varsayılan) &nbsp;·&nbsp; 🇹🇷 Türkçe &nbsp;·&nbsp; 🇩🇪 Deutsch
 </p>
 
 <b><a href="https://Cafu1107.github.io/komponent-depo/">Hemen dene →</a></b> &nbsp;|&nbsp; <a href="#-english">English below ↓</a>
 
 <br><br>
 
-<img src="docs/dark.png" alt="Komponent Depo — koyu tema" width="92%">
+<img src="docs/dark.png" alt="Komponent Depo — koyu tema (English)" width="92%">
 
 </div>
 
@@ -60,7 +60,7 @@ Her artış ve azalış zamanıyla kaydedilir. Hangi parçayı ne zaman kulland�
 <td valign="top">
 
 ### 🌐 3 dil, 4 para birimi
-Türkçe, English, Deutsch. ₺ · $ · € · £. Kategoriler, tarihler ve sayı biçimleri seçtiğin dile uyar.
+Site varsayılan olarak **English** açılır. Sağ üstten **Türkçe** veya **Deutsch** seçebilirsin, seçimin hatırlanır. ₺ · $ · € · £. Kategoriler, tarihler ve sayı biçimleri seçtiğin dile uyar.
 
 </td>
 <td valign="top">
@@ -88,8 +88,8 @@ Sunucu yok, hesap yok. Her şey tarayıcında saklanır. İstersen **JSON** olar
 <div align="center">
 <br>
 <img src="docs/editor.png" alt="Fotoğraf düzenleyici" width="46%">&nbsp;&nbsp;
-<img src="docs/light.png" alt="Açık tema, İngilizce" width="46%">
-<br><sub>Otomatik fotoğraf bulma ve düzenleyici &nbsp;·&nbsp; Açık tema (English)</sub>
+<img src="docs/light.png" alt="Açık tema, Türkçe" width="46%">
+<br><sub>Otomatik fotoğraf bulma ve düzenleyici &nbsp;·&nbsp; Açık tema (Türkçe)</sub>
 </div>
 
 ---
@@ -110,7 +110,7 @@ start index.html      # macOS: open index.html · Linux: xdg-open index.html
 
 | Parametre | Örnek | Ne yapar |
 |---|---|---|
-| `lang` | `?lang=en` | Dili seçer (`tr`, `en`, `de`) |
+| `lang` | `?lang=tr` | Dili seçer (`en` varsayılan, `tr`, `de`) |
 | `theme` | `?theme=light` | Temayı seçer (`dark`, `light`) |
 | `add` | `?add=ESP32` | “Yeni parça” formunu bu adla açar |
 
@@ -146,10 +146,10 @@ Hata bildirimi, öneri ve pull request'lere açığım. Yeni bir dil eklemek iç
 - 🎯 **Photo editor**: drag to center, zoom, rotate, fill/fit, backdrop color
 - 🛒 **Smart shopping list** with suggested amounts, estimated cost and a “Bought” button
 - 📈 **Stock history**, ⭐ favorites, duplicate, ↩️ undo delete
-- 🌐 **Turkish / English / German**, ₺ $ € £, dark & light themes
+- 🌐 **English (default) / Turkish / German**, ₺ $ € £, dark & light themes
 - 🔒 **Local-first**: data stays in your browser. JSON backup and CSV export for Excel
 
-**Try it:** https://Cafu1107.github.io/komponent-depo/?lang=en, or download `index.html` and open it.
+**Try it:** https://Cafu1107.github.io/komponent-depo/ (English by default; Turkish & German in the top-right menu), or download `index.html` and open it.
 
 Licensed under **MIT**.
 </details>
