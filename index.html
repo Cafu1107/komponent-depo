@@ -339,7 +339,7 @@ shopHint:'Önerilen miktar, uyarı eşiğinin 2 katına tamamlar. "Aldım" deyin
 have:'elde {n}',pcs:'{n} adet',bought:'Aldım',boughtToast:'{n} stoğa eklendi',estTotal:'Tahmini tutar',close:'Kapat',copyList:'Listeyi kopyala',copied:'Liste kopyalandı',
 editTitle:'Parçayı düzenle',f_name:'Parça adı *',f_namePh:'örn. ESP32, BC547, HC-SR04…',photo:'Fotoğraf',
 photoHint:'Parçanın adını yaz — fotoğraf internetten otomatik bulunur. Ya da buraya fotoğraf sürükle.',searching:'Fotoğraf aranıyor…',
-offline:'İnternete ulaşılamadı. Fotoğraf yükleyebilir ya da adres yapıştırabilirsin.',noPhoto:'Fotoğraf bulunamadı. İngilizce adıyla dene (örn. "soil moisture sensor").',
+offline:'Fotoğraf kaynaklarına şu an ulaşılamadı. Birkaç saniye sonra adı tekrar yaz, ya da fotoğraf yükle / adres yapıştır.',noPhoto:'Fotoğraf bulunamadı. İngilizce adıyla dene (örn. "soil moisture sensor").',
 photoFail:'Fotoğraf yüklenemedi',nPhotos:'{n} fotoğraf bulundu — beğendiğine tıkla',pickOne:'Beğendiğine tıkla:',upload:'Yükle',urlPh:'veya fotoğraf adresi yapıştır: https://…',webSearch:'Google Görseller',
 dragHint:'Fotoğrafı sürükleyerek ortala · tekerlek/kaydırıcı ile yakınlaştır · çift tık sıfırlar · Ctrl+V ile yapıştır',
 fitCover:'Doldur',fitContain:'Sığdır',bgw:'Beyaz zemin',bgd:'Koyu zemin',bgn:'Renkli zemin',reset:'Ortala',rotate:'Döndür',removePhoto:'Kaldır',dropHere:'Fotoğrafı buraya bırak',
@@ -369,7 +369,7 @@ shopHint:'Suggested amount tops up to 2× the alert level. Tap "Bought" to add i
 have:'have {n}',pcs:'{n} pcs',bought:'Bought',boughtToast:'{n} added to stock',estTotal:'Estimated total',close:'Close',copyList:'Copy list',copied:'List copied',
 editTitle:'Edit part',f_name:'Part name *',f_namePh:'e.g. ESP32, BC547, HC-SR04…',photo:'Photo',
 photoHint:'Type the part name — a photo is found online automatically. Or drop an image here.',searching:'Searching photos…',
-offline:'Can’t reach the internet. Upload a photo or paste an image URL.',noPhoto:'No photo found. Try the English name (e.g. "soil moisture sensor").',
+offline:'Can’t reach the photo sources right now. Retype the name in a few seconds, or upload a photo / paste a URL.',noPhoto:'No photo found. Try the English name (e.g. "soil moisture sensor").',
 photoFail:'Could not load photo',nPhotos:'{n} photos found — click the one you like',pickOne:'Click the one you like:',upload:'Upload',urlPh:'or paste an image URL: https://…',webSearch:'Google Images',
 dragHint:'Drag the photo to center it · wheel/slider to zoom · double-click resets · Ctrl+V to paste',
 fitCover:'Fill',fitContain:'Fit',bgw:'White backdrop',bgd:'Dark backdrop',bgn:'Color backdrop',reset:'Center',rotate:'Rotate',removePhoto:'Remove',dropHere:'Drop the photo here',
@@ -399,7 +399,7 @@ shopHint:'Vorschlag füllt auf das 2-fache der Warnschwelle auf. „Gekauft“ b
 have:'vorhanden {n}',pcs:'{n} Stk.',bought:'Gekauft',boughtToast:'{n} zum Bestand hinzugefügt',estTotal:'Geschätzte Summe',close:'Schließen',copyList:'Liste kopieren',copied:'Liste kopiert',
 editTitle:'Teil bearbeiten',f_name:'Teilename *',f_namePh:'z. B. ESP32, BC547, HC-SR04…',photo:'Foto',
 photoHint:'Teilenamen eingeben — ein Foto wird automatisch online gesucht. Oder Bild hierher ziehen.',searching:'Suche Fotos…',
-offline:'Keine Internetverbindung. Foto hochladen oder Bild-URL einfügen.',noPhoto:'Kein Foto gefunden. Versuch den englischen Namen (z. B. „soil moisture sensor“).',
+offline:'Fotoquellen gerade nicht erreichbar. Namen gleich erneut eingeben oder Foto hochladen / URL einfügen.',noPhoto:'Kein Foto gefunden. Versuch den englischen Namen (z. B. „soil moisture sensor“).',
 photoFail:'Foto konnte nicht geladen werden',nPhotos:'{n} Fotos gefunden — klick auf das passende',pickOne:'Klick auf das passende:',upload:'Hochladen',urlPh:'oder Bild-URL einfügen: https://…',webSearch:'Google Bilder',
 dragHint:'Foto ziehen zum Zentrieren · Mausrad/Regler zum Zoomen · Doppelklick setzt zurück · Strg+V zum Einfügen',
 fitCover:'Füllen',fitContain:'Einpassen',bgw:'Weißer Hintergrund',bgd:'Dunkler Hintergrund',bgn:'Farbiger Hintergrund',reset:'Zentrieren',rotate:'Drehen',removePhoto:'Entfernen',dropHere:'Foto hier ablegen',
@@ -905,59 +905,83 @@ function parseQ(q){
   }
   return{parts,nouns,vals,strong:nouns.filter(n=>!WEAK.has(n))};
 }
-/* başlık bu parçayla gerçekten ilgili mi? */
-function relevant(text,P){
-  const f=flat(text),ws=wordsOf(text),has=n=>ws.some(w=>w.startsWith(n));
-  if(P.parts.length)return P.parts.every(p=>p.chunks.every(c=>f.includes(c)));
-  return P.strong.length?(P.strong.length<=3?P.strong.every(has):P.strong.filter(has).length>=3):P.nouns.some(has);
-}
 /* aynı ürünün birebir tekrarlarını ayıklamak için anahtar */
 const dupKey=t=>wordsOf(t.replace(/^file:/i,'').replace(/\.[a-z]+$/i,'')).filter(w=>!/^\d+$/.test(w)&&!/^(cropped|top|bottom|side|backside|front|back|rotated|camera|view|jpg|png|jpeg|hdr|enhancer|angled|left|right|view)$/.test(w)).join(' ');
+/* başlık bu parçayla ne kadar ilgili? anahtarların kaçı geçiyor */
+const ELEC=/robot|board|modul|usb|drive|flash|memory|stick|pendrive|sensor|chip|\bkit\b|electr|component|pcb|arduino|microcontroller|micro.?bit|microchip|circuit|breadboard|raspberry|\besp|wifi|bluetooth|antenna|display|lcd|oled|\bled\b|resistor|capacitor|transistor|relay|motor|servo|battery|cable|connector|adapter|charger|reader|\bssd\b|\bhdd\b|disk|\bram\b|\bcpu\b|processor|device|hardware|gadget|solder|\bic\b|diode|switch|button|speaker|camera|shield|bit\b|controller|driver|regulator|power|volt|\bgb\b|\bmb\b/i;
+/* tek başına kısmi eşleşme için yetmeyen genel kelimeler */
+const GEN=new Set(['sensor','module','board','display','cable','battery','switch','button','motor','driver','light','power','camera','panel','usb','charger','speaker','regulator','solar','kit']);
+function keysOf(P){
+  const ks=P.parts.map(p=>({part:1,alts:[p.chunks]}));
+  (P.strong.length?P.strong:P.nouns).forEach(n=>ks.push({alts:[n]}));
+  return ks;
+}
+function matchKey(k,f,ws){return k.alts.some(a=>k.part?a.every(c=>f.includes(c)):(a.length>=4?f.includes(a):ws.some(w=>w.startsWith(a))))}
+/* 0 = tam eşleşme, 1 = kısmi ama elektronik bağlamlı, -1 = alakasız */
+function tierOf(text,K,ctxTry){
+  const f=flat(text),ws=wordsOf(text),hit=K.filter(k=>matchKey(k,f,ws)),ctx=ELEC.test(text);
+  if(!hit.length)return -1;
+  if(hit.length===K.length)return K.length===1&&!K[0].part&&!ctx&&!ctxTry?-1:0;
+  return hit.some(k=>k.part)||(ctx&&hit.some(k=>!GEN.has(k.alts[0])))?1:-1;
+}
 async function findImgs(q){
-  q=q.trim();const key='v3|'+q.toLowerCase();if(IC[key])return IC[key];
+  q=q.trim();const key='v4|'+q.toLowerCase();if(IC[key])return IC[key];
   const P=parseQ(q);if(!P.parts.length&&!P.nouns.length)return IC[key]=[];
-  const pn=P.parts.map(p=>p.raw).join(' '),en=[pn,...P.nouns].filter(Boolean).join(' '),st=P.strong.join(' ');
-  /* denemeler: parça no varsa doğrudan; yoksa "electronic" bağlamıyla, sonra yalın */
-  const vs=P.vals.length?P.vals.join(' ')+' '+en:'';
-  const tries=(P.parts.length?[pn,en]:[vs,en+' electronic',en,st&&st!==en?st+' electronic':'',st&&st!==en?st:'']).filter(Boolean).map(s=>({s,P}));
-  /* eş anlamlı: LED = light-emitting diode */
-  if(!P.parts.length&&P.nouns.includes('led'))tries.push({s:'light emitting diode',P:{parts:[],nouns:['led','diode'],vals:[],strong:[]}});
-  /* nadir parça numarası (ör. BC547): kategorisinden yedek fotoğraflar */
-  const g=P.parts.length&&CAT_EN[guess(q)];if(g)tries.push({s:g+' electronic',P:parseQ(g),fb:1});
-  const seen=new Set(),keys={},out=[];let ok=false,wikiDone=false;
-  const add=(u,title,fk)=>{const dk=dupKey(title);if(!u||seen.has(fk)||(keys[dk]||0)>=2)return;seen.add(fk);keys[dk]=(keys[dk]||0)+1;out.push(u)};
-  for(const {s,P:RP,fb} of [...new Map(tries.map(x=>[x.s,x])).values()]){
-    if(fb&&out.length>=6)break;
+  const K=keysOf(P),pn=P.parts.map(p=>p.raw).join(' '),en=[pn,...P.nouns].filter(Boolean).join(' ');
+  const vs=P.vals.length?P.vals.join(' ')+' '+en:'',single=!P.parts.length&&K.length===1;
+  /* denemeler: tam ad → (tek genel kelimeyse "electronic" bağlamı) → yazım önerisi → tek tek kelimeler */
+  const tries=[vs,en,single?en+' electronic':'',P.parts.length&&pn!==en?pn:'',...(K.length>1?(P.strong.length?P.strong:P.nouns).slice(0,2):[])].filter(Boolean);
+  if(!P.parts.length&&P.nouns.includes('led'))tries.push('light emitting diode');
+  const g=P.parts.length&&CAT_EN[guess(q)];
+  const seen=new Set(),dk={},T=[[],[]];let ok=false,sugg=false;
+  const add=(tier,u,title,fk)=>{const d=dupKey(title);if(!u||seen.has(fk)||(dk[d]||0)>=2)return;seen.add(fk);dk[d]=(dk[d]||0)+1;T[tier].push(u)};
+  const run=async(s,ctxTry)=>{
     const [cm,ov,wk]=await Promise.allSettled([
       jget(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrlimit=50&gsrsearch=${encodeURIComponent(s+' filetype:bitmap')}&prop=imageinfo&iiprop=url|mime|size&iiurlwidth=600&format=json&origin=*`),
-      RP.parts.length||RP.strong.length>=2?jget(`https://api.openverse.org/v1/images/?q=${encodeURIComponent(s)}&page_size=40&category=photograph&mature=false`):Promise.resolve(null),
-      wikiDone||fb?Promise.resolve(null):jget(`https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrlimit=1&gsrsearch=${encodeURIComponent(en)}&prop=pageimages&piprop=thumbnail|name&pithumbsize=600&format=json&origin=*`)
+      single&&!ctxTry?Promise.resolve(null):jget(`https://api.openverse.org/v1/images/?q=${encodeURIComponent(s)}&page_size=40&category=photograph&mature=false`),
+      sugg?Promise.resolve(null):jget(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(en)}&srinfo=suggestion&srlimit=1&generator=search&gsrlimit=1&gsrsearch=${encodeURIComponent(en)}&prop=pageimages&piprop=thumbnail|name&pithumbsize=600&format=json&origin=*`)
     ]);
-    wikiDone=true;if(cm.status==='fulfilled'||(wk.status==='fulfilled'&&wk.value))ok=true;
-    /* Wikipedia: yalnızca en iyi eşleşen makalenin gerçek fotoğrafı (logo/svg değil) */
-    if(wk.status==='fulfilled'&&wk.value)for(const p of pagesOf(wk.value).slice(0,1))
-      if(p.thumbnail&&p.pageimage&&!IMG_BAD.test(p.pageimage+' '+p.title)&&relevant(p.title+' '+p.pageimage,RP))add(p.thumbnail.source,p.pageimage,'wm:'+flat(p.pageimage));
-    /* Commons: filtrele + puanla (kısa, ürün adıyla başlayan başlıklar öne) */
+    if(cm.status==='fulfilled')ok=true; /* ana kaynak yanıt vermediyse 'bulunamadı' deme */
+    /* Wikipedia: en iyi makalenin gerçek fotoğrafı + yazım önerisi (ör. kingstone → kingston) */
+    if(wk.status==='fulfilled'&&wk.value){
+      sugg=true;const sg=wk.value.query?.searchinfo?.suggestion;
+      if(sg&&flat(sg)!==flat(en)){
+        const SP=parseQ(sg);keysOf(SP).forEach((k,i)=>{if(K[i]&&!K[i].part&&!k.part)K[i].alts.push(k.alts[0])});
+        tries.splice(tries.indexOf(s)+1,0,sg);
+      }
+      for(const p of pagesOf(wk.value).slice(0,1)){const t=p.title+' '+(p.pageimage||''),tr=tierOf(t,K,ctxTry);
+        if(p.thumbnail&&p.pageimage&&!IMG_BAD.test(t)&&tr>=0)add(tr,p.thumbnail.source,p.pageimage,'wm:'+flat(p.pageimage.replace(/\.[a-z0-9]+$/i,'')))}
+    }
+    /* Commons: çöp filtresi + puanlama (tam eşleşen, kısa, ürün adıyla başlayan başlıklar öne) */
     const C=[];
     if(cm.status==='fulfilled')pagesOf(cm.value).forEach((p,k)=>{
       const ii=p.imageinfo?.[0],t=(p.title||'').replace(/^file:/i,'');if(!ii||!/image\/(jpeg|webp|png)/.test(ii.mime))return;
-      const mn=Math.min(ii.width,ii.height),ar=ii.width/ii.height;
-      if(mn<250||ar<.45||ar>2.4||IMG_BAD.test(t)||!relevant(t,RP))return;
-      const lead=RP.parts.length?flat(t).startsWith(RP.parts[0].chunks[0]):wordsOf(t).slice(0,3).some(w=>RP.nouns.some(n=>w.startsWith(n)));
-      C.push([k+(t.length>60?12:0)+(ii.mime==='image/png'?20:0)+(IMG_MEH.test(t)?14:0)-(lead?6:0),ii.thumburl||ii.url,t,'wm:'+flat(t)]);
+      const mn=Math.min(ii.width,ii.height),ar=ii.width/ii.height,tr=tierOf(t,K,ctxTry);
+      if(mn<200||ar<.4||ar>2.6||IMG_BAD.test(t)||tr<0)return;
+      const lead=wordsOf(t).slice(0,3).some(w=>K.some(x=>matchKey(x,flat(w),[w])));
+      C.push([tr*50+k+(t.length>60?12:0)+(ii.mime==='image/png'?8:0)+(IMG_MEH.test(t)?14:0)-(lead?6:0),tr,ii.thumburl||ii.url,t,'wm:'+flat(t.replace(/\.[a-z0-9]+$/i,''))]);
     });
     C.sort((a,b)=>a[0]-b[0]);
-    /* Openverse: yalnız parça numaralı aramalarda, Wikimedia kopyaları hariç, başlık/etiket eşleşmeli */
+    /* Openverse: yalnız fotoğraflar; başlık + etiketlerle eşleşme */
     const O=[];
-    if(ov.status==='fulfilled'&&ov.value){ok=true;for(const r of ov.value.results||[]){
-      if(r.source==='wikimedia'||!r.thumbnail||IMG_BAD.test(r.title||''))continue;
-      if(relevant((r.title||'')+' '+(r.tags||[]).map(x=>x.name).join(' '),RP))O.push([r.thumbnail,r.title||r.id,'ov:'+r.id]);
-    }}
-    C.slice(0,6).forEach(x=>add(x[1],x[2],x[3]));
-    const rest=C.slice(6);for(let i=0;i<Math.max(rest.length,O.length);i++){if(O[i])add(...O[i]);if(rest[i])add(rest[i][1],rest[i][2],rest[i][3])}
-    if(out.length>=12)break;
+    if(ov.status==='fulfilled'&&ov.value)for(const r of ov.value.results||[]){
+      const t=r.title||'',tx=t+' '+(r.tags||[]).map(x=>x.name).join(' '),tr=tierOf(tx,K,ctxTry);
+      if(!r.thumbnail||IMG_BAD.test(t)||tr<0)continue;
+      O.push([tr,r.thumbnail,t||r.id,r.source==='wikimedia'?'wm:'+flat(t):'ov:'+r.id]);
+    }
+    const c0=C.filter(x=>!x[1]),o0=O.filter(x=>!x[0]);
+    c0.slice(0,6).forEach(x=>add(0,x[2],x[3],x[4]));
+    for(let i=0;i<Math.max(c0.length,o0.length);i++){if(o0[i])add(0,o0[i][1],o0[i][2],o0[i][3]);if(c0[i+6])add(0,c0[i+6][2],c0[i+6][3],c0[i+6][4])}
+    C.filter(x=>x[1]).forEach(x=>add(1,x[2],x[3],x[4]));O.filter(x=>x[0]).forEach(x=>add(1,x[1],x[2],x[3]));
+  };
+  for(let i=0;i<tries.length&&i<6;i++){
+    await run(tries[i],/electronic$/.test(tries[i]));
+    if(T[0].length>=12)break;
   }
-  if(!out.length&&!ok)return null;
+  /* nadir parça numarası (ör. BC547): kategorisinden yedek fotoğraflar */
+  if(g&&T[0].length+T[1].length<6){const K0=K.splice(0,K.length,...keysOf(parseQ(g)));await run(g+' electronic',true);K.splice(0,K.length,...K0)}
+  const out=[...T[0],...T[1]];
+  if(!out.length)return ok?[]:null; /* boş sonuç önbelleğe alınmaz, tekrar denenebilir */
   return IC[key]=out.slice(0,12);
 }
 async function autoFill(){
