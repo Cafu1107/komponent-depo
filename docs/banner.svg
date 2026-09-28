@@ -38,6 +38,6 @@
   <rect x="80" y="92" width="88" height="88" rx="24" fill="url(#g)"/>
   <text x="124" y="152" text-anchor="middle" font-size="44">🔧</text>
   <text x="196" y="150" font-size="64" font-weight="800" fill="#f3f0ff" letter-spacing="-1.5">Komponent <tspan fill="url(#g)">Depo</tspan></text>
-  <text x="82" y="232" font-size="27" fill="#b3abd6">Elektronik parçalarını say, bul, eksikleri gör.</text>
-  <text x="82" y="270" font-size="20" fill="#7a72a3">Count, find and restock your electronic parts — in one HTML file.</text>
+  <text x="82" y="232" font-size="27" fill="#b3abd6">Count, find and restock your electronic parts.</text>
+  <text x="82" y="270" font-size="20" fill="#7a72a3">One HTML file · zero dependencies · English · Türkçe · Deutsch</text>
 </svg>
