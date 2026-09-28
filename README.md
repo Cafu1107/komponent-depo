@@ -32,7 +32,7 @@
 <td width="50%" valign="top">
 
 ### 📷 Finds photos by itself
-Type a part name (`ESP32`, `HC-SR04`, `BC547`…). The app searches **Wikipedia**, **Wikimedia Commons** and **Openverse**, picks the first photo that actually loads, and offers up to 12 alternatives.
+Type a part name (`ESP32`, `HC-SR04`, `BC547`…). The app searches **Wikimedia Commons**, **Wikipedia** and **Openverse** and shows **12 different photos of that exact part** in a grid. Logos, diagrams, pinouts, screenshots and unrelated pictures are filtered out, and Turkish/German part names are translated for the search.
 
 </td>
 <td width="50%" valign="top">
@@ -144,7 +144,7 @@ Bug reports, ideas and pull requests are welcome. To add a new language, add one
 
 ### ✨ Özellikler
 
-- 📷 **Fotoğrafı kendisi bulur.** Parçanın adını yazarsın (`ESP32`, `HC-SR04`, `BC547`…). Uygulama Wikipedia, Wikimedia Commons ve Openverse'te arar, gerçekten açılan ilk fotoğrafı seçer ve 12'ye kadar seçenek sunar.
+- 📷 **Fotoğrafı kendisi bulur.** Parçanın adını yazarsın (`ESP32`, `HC-SR04`, `BC547`…). Uygulama Wikimedia Commons, Wikipedia ve Openverse'te arar ve **o parçanın 12 farklı fotoğrafını** tablo halinde gösterir. Logolar, şemalar, pin diyagramları, ekran görüntüleri ve alakasız resimler elenir. Türkçe parça adları arama için İngilizceye çevrilir.
 - 🎯 **Fotoğraf düzenleyici.** Fotoğrafı sürükleyerek ortalarsın. Yakınlaştırabilir, döndürebilir, *Doldur / Sığdır* arasında geçebilir, zemin rengini seçebilirsin.
 - 🛒 **Akıllı alışveriş listesi.** Az kalan ve tükenen parçalar önerilen miktar ve tahmini tutarla listelenir. **“Aldım”** deyince stoğa eklenir.
 - 📈 **Stok geçmişi.** Her artış ve azalış zamanıyla kaydedilir.
