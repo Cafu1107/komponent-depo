@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" font-family="Segoe UI, system-ui, -apple-system, Roboto, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#15122b"/>
+      <stop offset="1" stop-color="#0c0a1d"/>
+    </linearGradient>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8b5cf6"/>
+      <stop offset=".5" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+    <radialGradient id="b1"><stop offset="0" stop-color="#8b5cf6" stop-opacity=".55"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></radialGradient>
+    <radialGradient id="b2"><stop offset="0" stop-color="#22d3ee" stop-opacity=".45"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
+    <radialGradient id="b3"><stop offset="0" stop-color="#ff5fa2" stop-opacity=".3"/><stop offset="1" stop-color="#ff5fa2" stop-opacity="0"/></radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#b4a5ff" stroke-opacity=".06"/></pattern>
+  </defs>
+  <rect width="1280" height="360" rx="28" fill="url(#bg)"/>
+  <rect width="1280" height="360" rx="28" fill="url(#grid)"/>
+  <circle cx="120" cy="40" r="300" fill="url(#b1)"/>
+  <circle cx="1200" cy="60" r="280" fill="url(#b2)"/>
+  <circle cx="760" cy="420" r="260" fill="url(#b3)"/>
+
+  <!-- devre izleri -->
+  <g stroke="url(#g)" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55">
+    <path d="M880 70h90l30 30h120"/><path d="M900 290h70l40-40h150"/><path d="M1000 180h180"/>
+  </g>
+  <g fill="#22d3ee"><circle cx="1120" cy="100" r="7"/><circle cx="1160" cy="250" r="7"/><circle cx="1180" cy="180" r="7"/></g>
+  <g fill="#8b5cf6"><circle cx="880" cy="70" r="7"/><circle cx="900" cy="290" r="7"/><circle cx="1000" cy="180" r="7"/></g>
+  <!-- çip -->
+  <g transform="translate(1030 140)">
+    <g stroke="#a78bfa" stroke-width="4" stroke-linecap="round">
+      <path d="M-40 -18h-14M-40 0h-14M-40 18h-14M40 -18h14M40 0h14M40 18h14M-18 -40v-14M0 -40v-14M18 -40v-14M-18 40v14M0 40v14M18 40v14"/>
+    </g>
+    <rect x="-40" y="-40" width="80" height="80" rx="12" fill="#201c3d" stroke="url(#g)" stroke-width="3"/>
+    <text x="0" y="11" text-anchor="middle" font-size="30">🔧</text>
+  </g>
+
+  <rect x="80" y="92" width="88" height="88" rx="24" fill="url(#g)"/>
+  <text x="124" y="152" text-anchor="middle" font-size="44">🔧</text>
+  <text x="196" y="150" font-size="64" font-weight="800" fill="#f3f0ff" letter-spacing="-1.5">Komponent <tspan fill="url(#g)">Depo</tspan></text>
+  <text x="82" y="232" font-size="27" fill="#b3abd6">Elektronik parçalarını say, bul, eksikleri gör.</text>
+  <text x="82" y="270" font-size="20" fill="#7a72a3">Count, find and restock your electronic parts — in one HTML file.</text>
+</svg>

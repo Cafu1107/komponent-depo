@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0c0a1d">
+<title>Komponent Depo</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0a1d;--s1:#15122b;--s2:#201c3d;--s3:#2b2651;--bd:rgba(180,165,255,.14);--bd2:rgba(180,165,255,.28);
+  --tx:#f3f0ff;--tx2:#b3abd6;--tx3:#7a72a3;
+  --p1:#8b5cf6;--p2:#22d3ee;--acc:#ff5fa2;
+  --g:linear-gradient(120deg,#8b5cf6 0%,#6366f1 35%,#22d3ee 70%,#8b5cf6 100%);
+  --ok:#34d399;--warn:#fbbf24;--bad:#fb7185;
+  --sh:0 18px 40px -18px rgba(0,0,0,.7);--r:16px;--ease:cubic-bezier(.34,1.56,.64,1)
+}
+[data-theme=light]{
+  --bg:#f5f3ff;--s1:#ffffff;--s2:#efebff;--s3:#e2dbff;--bd:rgba(70,45,160,.12);--bd2:rgba(70,45,160,.26);
+  --tx:#1b1537;--tx2:#5b5480;--tx3:#9a93bd;
+  --ok:#059669;--warn:#d97706;--bad:#e11d48;--sh:0 18px 40px -20px rgba(60,40,140,.35)
+}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;transition:background .3s,color .3s}
+.bgfx{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+.bgfx i{position:absolute;width:46vmax;height:46vmax;border-radius:50%;filter:blur(90px);opacity:.28;animation:float 22s ease-in-out infinite alternate}
+.bgfx i:nth-child(1){background:#8b5cf6;top:-20vmax;left:-12vmax}
+.bgfx i:nth-child(2){background:#22d3ee;top:-14vmax;right:-18vmax;animation-delay:-7s}
+.bgfx i:nth-child(3){background:#ff5fa2;bottom:-26vmax;left:30vw;opacity:.16;animation-delay:-13s}
+[data-theme=light] .bgfx i{opacity:.18}
+@keyframes float{to{transform:translate(6vw,5vh) scale(1.12)}}
+.wrap{max-width:1220px;margin:0 auto;padding:1.4rem 16px 3rem}
+
+/* Başlık */
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.3rem}
+.logo{display:flex;gap:13px;align-items:center}
+.lg{width:52px;height:52px;border-radius:16px;background:var(--g);background-size:300% 100%;display:grid;place-items:center;font-size:26px;box-shadow:0 10px 28px -8px rgba(139,92,246,.7);animation:shim 8s linear infinite}
+@keyframes shim{to{background-position:300% 0}}
+h1{font-size:24px;letter-spacing:-.4px;background:linear-gradient(90deg,var(--tx),var(--p1) 60%,var(--p2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:13px;color:var(--tx2);margin-top:2px}
+.acts,.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* Butonlar */
+.btn{position:relative;overflow:hidden;height:42px;padding:0 16px;border-radius:13px;border:1px solid var(--bd);background:var(--s1);color:var(--tx);font-size:14px;font-weight:500;line-height:1;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;white-space:nowrap;
+  transition:transform .25s var(--ease),box-shadow .25s,border-color .2s,background-color .2s,background-position .6s}
+.btn:hover{transform:translateY(-2px);border-color:var(--p1);box-shadow:0 10px 24px -12px var(--p1)}
+.btn:active{transform:translateY(0) scale(.95);transition-duration:.08s}
+.btn.pri{background:var(--g);background-size:250% 100%;color:#fff;border:0;font-weight:700;box-shadow:0 8px 22px -8px rgba(139,92,246,.75)}
+.btn.pri:hover{background-position:100% 0;box-shadow:0 12px 30px -8px rgba(34,211,238,.6)}
+.btn.ok{background:color-mix(in srgb,var(--ok) 16%,var(--s1));border-color:color-mix(in srgb,var(--ok) 40%,transparent);color:var(--ok);font-weight:600}
+.btn.ok:hover{background:var(--ok);color:#06251a;box-shadow:0 10px 22px -10px var(--ok)}
+.btn.danger{color:var(--bad)}
+.btn.danger:hover{background:var(--bad);color:#fff;border-color:var(--bad);box-shadow:0 10px 22px -10px var(--bad)}
+.btn.sm{height:34px;padding:0 12px;font-size:13px;border-radius:11px}
+.btn.icon{width:42px;padding:0;font-size:17px}
+.btn .cnt{background:var(--bad);color:#fff;border-radius:20px;font-size:11px;font-weight:800;padding:3px 7px;animation:pulse 2s infinite}
+.btn .cnt:empty{display:none}
+#thm.spin{animation:spin .5s var(--ease)}
+@keyframes spin{from{transform:rotate(-180deg) scale(.5)}}
+.rip{position:absolute;border-radius:50%;background:currentColor;opacity:.28;transform:scale(0);animation:rip .6s ease-out forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(2.8);opacity:0}}
+@keyframes pulse{50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--bad) 0%,transparent)}0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--bad) 55%,transparent)}}
+:focus-visible{outline:2px solid var(--p2);outline-offset:2px}
+
+/* Form elemanları */
+input,select,textarea{background:var(--s1);border:1px solid var(--bd);border-radius:12px;color:var(--tx);font-family:inherit;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--p1);box-shadow:0 0 0 4px color-mix(in srgb,var(--p1) 22%,transparent)}
+input,select{height:42px;padding:0 12px}
+select{appearance:none;-webkit-appearance:none;padding-right:34px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b86a8' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+textarea{width:100%;padding:10px 12px;min-height:84px;resize:vertical;line-height:1.55}
+input[type=number]::-webkit-inner-spin-button{opacity:.5}
+input[type=range]{height:auto;padding:0;border:0;background:none;accent-color:var(--p1);box-shadow:none!important}
+
+/* İstatistik */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:1rem}
+.st{position:relative;overflow:hidden;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;display:flex;gap:12px;align-items:center;text-align:left;font-family:inherit;color:inherit;transition:transform .25s var(--ease),border-color .2s,box-shadow .25s}
+.st::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--c)}
+.st .si{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:color-mix(in srgb,var(--c) 18%,transparent);flex:none}
+.st b{display:block;font-size:24px;line-height:1.1;color:var(--c);font-variant-numeric:tabular-nums}
+.st span{font-size:12px;color:var(--tx2)}
+button.st{cursor:pointer}
+button.st:hover{transform:translateY(-3px);border-color:var(--c);box-shadow:0 12px 26px -14px var(--c)}
+.st.on{border-color:var(--c);box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 40%,transparent)}
+
+/* Kategori çubuğu + çipler */
+.cbar{display:flex;height:9px;border-radius:9px;overflow:hidden;gap:2px;margin:0 0 12px;background:var(--s2)}
+.cbar button{border:0;background:var(--c);cursor:pointer;min-width:6px;transition:filter .2s,transform .2s}
+.cbar button:hover{filter:brightness(1.25);transform:scaleY(1.4)}
+.cbar.sel button:not(.on){opacity:.3}
+.tools{margin-bottom:12px}
+.sw{flex:1;min-width:230px;position:relative}
+.sw .ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none}
+.sw input{width:100%;padding-left:40px;padding-right:70px}
+.sw kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:600;font-family:inherit;color:var(--tx3);border:1px solid var(--bd2);border-radius:6px;padding:4px 7px}
+.sw .clr{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:var(--s2);color:var(--tx2);width:26px;height:26px;border-radius:8px;cursor:pointer;display:none}
+.sw.has .clr{display:block}.sw.has kbd{display:none}
+.seg{display:flex;background:var(--s1);border:1px solid var(--bd);border-radius:13px;padding:3px;gap:3px}
+.seg button{position:relative;overflow:hidden;border:0;background:none;color:var(--tx2);width:36px;height:34px;border-radius:10px;cursor:pointer;font-size:16px;transition:.2s}
+.seg button.on{background:var(--g);background-size:250% 100%;color:#fff}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.chip{position:relative;overflow:hidden;padding:7px 13px;border-radius:30px;border:1px solid var(--bd);background:var(--s1);color:var(--tx2);font-size:13px;font-weight:500;line-height:1;font-family:inherit;cursor:pointer;transition:transform .25s var(--ease),background .2s,color .2s,border-color .2s}
+.chip:hover{transform:translateY(-2px);border-color:var(--c,var(--p1));color:var(--tx)}
+.chip:active{transform:scale(.94)}
+.chip.on{background:var(--c,var(--p1));color:#120e26;border-color:transparent;font-weight:700;box-shadow:0 6px 16px -8px var(--c,var(--p1))}
+.chip.on.all{background:var(--g);background-size:250% 100%;color:#fff}
+.chip small{opacity:.7;margin-left:3px}
+.rcount{font-size:12px;color:var(--tx3);margin:0 0 12px 2px}
+
+/* Kartlar */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:16px}
+.card{position:relative;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;
+  animation:rise .45s var(--ease) both;animation-delay:calc(var(--i,0)*35ms);transition:transform .3s var(--ease),box-shadow .3s,border-color .2s}
+.card.na{animation:none}
+@keyframes rise{from{opacity:0;transform:translateY(16px) scale(.97)}}
+.card:hover{transform:translateY(-5px);box-shadow:0 20px 36px -18px color-mix(in srgb,var(--c) 70%,#000);border-color:color-mix(in srgb,var(--c) 70%,transparent)}
+.card::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.09) 50%,transparent 60%);transform:translateX(-100%);transition:transform .7s;pointer-events:none}
+.card:hover::after{transform:translateX(100%)}
+.card.bye{animation:bye .28s ease forwards}
+@keyframes bye{to{opacity:0;transform:scale(.85) rotate(-2deg)}}
+.ph{position:relative;aspect-ratio:3/2;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,color-mix(in srgb,var(--c) 38%,var(--s2)),var(--s2) 75%)}
+.ph .em{font-size:52px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.3));transition:transform .4s var(--ease)}
+.card:hover .ph .em{transform:scale(1.15) rotate(-8deg)}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 50%;user-select:none;-webkit-user-drag:none}
+.ph.hasimg.bgw{background:#fff}.ph.hasimg.bgd{background:#0f0d1c}
+.ph.hasimg .em{display:none}
+.bdg{position:absolute;top:10px;right:10px;font-size:11px;font-weight:800;padding:5px 10px;border-radius:30px;color:#0c0a1d;background:var(--sc);box-shadow:0 4px 12px -4px var(--sc);z-index:1}
+.s-ok{--sc:var(--ok)}.s-low{--sc:var(--warn)}.s-out{--sc:var(--bad)}
+.s-out .bdg{animation:pulseB 1.8s infinite}
+@keyframes pulseB{50%{transform:scale(1.08)}}
+.fav{position:absolute;top:8px;left:8px;z-index:1;width:32px;height:32px;border-radius:50%;border:0;background:rgba(12,10,29,.45);backdrop-filter:blur(6px);color:rgba(255,255,255,.75);font-size:16px;cursor:pointer;opacity:0;transition:opacity .2s,transform .3s var(--ease)}
+.card:hover .fav,.fav.on,.fav:focus-visible{opacity:1}
+.fav:hover{transform:scale(1.15)}
+.fav.on{color:#ffd23f;text-shadow:0 0 12px rgba(255,210,63,.8)}
+.fav.pop{animation:star .5s var(--ease)}
+@keyframes star{40%{transform:scale(1.6) rotate(20deg)}}
+.cb{padding:12px 14px 14px;display:flex;flex-direction:column;flex:1}
+.nm{font-size:15.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+mark{background:color-mix(in srgb,var(--p2) 35%,transparent);color:inherit;border-radius:4px;padding:0 2px}
+.meta{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0}
+.pill{font-size:11px;padding:4px 9px;border-radius:30px;background:var(--s2);color:var(--tx2);white-space:nowrap}
+.pill.c{background:color-mix(in srgb,var(--c) 22%,transparent);color:var(--tx);font-weight:600}
+.ds{font-size:12.5px;color:var(--tx2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:37px}
+.mut{opacity:.5}
+.bar{height:6px;border-radius:9px;background:var(--s2);overflow:hidden;margin:11px 0}
+.bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,color-mix(in srgb,var(--sc) 60%,transparent),var(--sc));transition:width .4s var(--ease)}
+.ft{display:flex;justify-content:space-between;align-items:center;margin-top:auto;gap:6px}
+.q{display:flex;align-items:center;gap:4px;background:var(--s2);border-radius:12px;padding:3px}
+.qb{position:relative;overflow:hidden;width:32px;height:32px;border-radius:10px;border:0;background:var(--s1);color:var(--tx);font-size:18px;font-weight:600;cursor:pointer;line-height:1;touch-action:manipulation;user-select:none;transition:transform .2s var(--ease),background .15s,color .15s}
+.qb:hover{background:var(--p1);color:#fff}
+.qb:active{transform:scale(.85)}
+.qn{width:52px;height:32px;padding:0 2px;border:0;background:none;text-align:center;font-size:16px;font-weight:800;border-radius:8px;-moz-appearance:textfield;font-variant-numeric:tabular-nums}
+.qn::-webkit-inner-spin-button,.qn::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.qn:focus{box-shadow:0 0 0 2px var(--p1)}
+.qn.bump{animation:bump .3s var(--ease)}
+@keyframes bump{40%{transform:scale(1.3);color:var(--p2)}}
+.ia{display:flex}
+.ib{position:relative;overflow:hidden;background:none;border:0;cursor:pointer;font-size:15px;width:32px;height:32px;border-radius:9px;color:var(--tx);transition:transform .25s var(--ease),background .15s}
+.ib:hover{background:var(--s2);transform:translateY(-2px) scale(1.08)}
+.ib.del:hover{background:color-mix(in srgb,var(--bad) 22%,transparent)}
+
+/* Liste görünümü */
+.grid.list{grid-template-columns:1fr;gap:9px}
+.grid.list .card{flex-direction:row;align-items:stretch}
+.grid.list .ph{width:120px;flex:none;aspect-ratio:auto;min-height:92px}
+.grid.list .ph .em{font-size:34px}
+.grid.list .bdg{top:auto;bottom:6px;right:6px;font-size:10px;padding:3px 7px}
+.grid.list .cb{flex-direction:row;align-items:center;gap:14px;padding:10px 14px;flex-wrap:wrap}
+.grid.list .cb>.inf{flex:1;min-width:180px}
+.grid.list .ds{-webkit-line-clamp:1;min-height:0}
+.grid.list .bar{display:none}
+.grid.list .ft{margin:0}
+.inf{min-width:0;display:flex;flex-direction:column}
+
+/* Boş durum */
+.empty{grid-column:1/-1;text-align:center;padding:3.5rem 1rem;color:var(--tx2)}
+.empty .big{font-size:58px;display:inline-block;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px) rotate(6deg)}}
+.empty h3{color:var(--tx);margin:10px 0 6px;font-size:19px}
+.empty .btns{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.foot{text-align:center;color:var(--tx3);font-size:12px;margin-top:2.2rem}
+
+/* Modal */
+.ov{position:fixed;inset:0;background:rgba(5,3,15,.62);backdrop-filter:blur(6px);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;visibility:hidden;transition:opacity .22s,visibility .22s}
+.ov.open{opacity:1;visibility:visible}
+.md{background:var(--s1);border:1px solid var(--bd2);border-radius:22px;width:100%;max-width:580px;max-height:92vh;overflow:auto;padding:1.4rem;box-shadow:0 30px 70px -20px rgba(0,0,0,.7);transform:translateY(24px) scale(.96);transition:transform .35s var(--ease)}
+.ov.open .md{transform:none}
+.md.wide{max-width:640px}
+.mh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:1rem}
+.mh h2{font-size:19px;display:flex;align-items:center;gap:8px;min-width:0}
+.mh h2 span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.f{margin-bottom:13px}
+.f label,.lbl{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--tx2);margin-bottom:6px;font-weight:500}
+.f input,.f select{width:100%}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row .f{flex:1;min-width:120px}
+.tag{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--g);background-size:250% 100%;color:#fff}
+.hint{font-size:12.5px;color:var(--warn);margin-top:6px}
+.hint:empty{display:none}
+.lnk{background:none;border:0;color:var(--p2);font:inherit;font-weight:700;cursor:pointer;text-decoration:underline}
+.mf{display:flex;gap:8px;justify-content:flex-end;margin-top:1.2rem;flex-wrap:wrap}
+.mf .sp{flex:1}
+
+/* Fotoğraf düzenleyici */
+.crop{width:min(100%,500px);margin:0 auto;border-radius:14px;cursor:grab;touch-action:none;border:1px solid var(--bd);outline-offset:3px}
+.crop.drag{cursor:grabbing}
+.crop .cmsg{position:relative;z-index:1;font-size:13px;color:var(--tx2);text-align:center;padding:0 18px}
+.crop .guides{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .2s;
+  background:linear-gradient(90deg,transparent calc(33.33% - .5px),rgba(255,255,255,.55) 33.33%,transparent calc(33.33% + .5px),transparent calc(66.66% - .5px),rgba(255,255,255,.55) 66.66%,transparent calc(66.66% + .5px)),
+  linear-gradient(transparent calc(33.33% - .5px),rgba(255,255,255,.55) 33.33%,transparent calc(33.33% + .5px),transparent calc(66.66% - .5px),rgba(255,255,255,.55) 66.66%,transparent calc(66.66% + .5px));
+  box-shadow:inset 0 0 0 1px rgba(139,92,246,.5)}
+.crop.drag .guides,.crop:focus-visible .guides{opacity:1}
+.crop .drop{position:absolute;inset:0;z-index:3;display:grid;place-items:center;background:color-mix(in srgb,var(--p1) 70%,transparent);color:#fff;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s;border-radius:14px}
+.crop.over .drop{opacity:1}
+.crop:not(.hasimg){cursor:default}
+.ctrl{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:9px 0 4px;transition:opacity .2s}
+.ctrl.off{opacity:.35;pointer-events:none}
+.zoom{display:flex;align-items:center;gap:7px;flex:1;min-width:150px;background:var(--s2);border-radius:11px;padding:0 10px;height:34px;font-size:12px;color:var(--tx2)}
+.zoom input{flex:1;min-width:60px}
+.zoom b{min-width:38px;text-align:right;color:var(--tx);font-variant-numeric:tabular-nums}
+.chint{font-size:11.5px;color:var(--tx3);margin-bottom:8px}
+.sug{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 8px;min-height:24px;font-size:12.5px;color:var(--tx2);align-items:center;scrollbar-width:thin}
+.th{width:70px;height:70px;flex:none;border-radius:11px;object-fit:cover;background:#fff;border:2px solid transparent;cursor:pointer;transition:transform .25s var(--ease),border-color .2s;animation:rise .35s var(--ease) both}
+.th:hover{transform:scale(1.08)}
+.th.sel{border-color:var(--p2);box-shadow:0 0 0 3px color-mix(in srgb,var(--p2) 35%,transparent)}
+.skel{width:70px;height:70px;flex:none;border-radius:11px;background:linear-gradient(90deg,var(--s2),var(--s3),var(--s2));background-size:200% 100%;animation:sk 1s linear infinite}
+@keyframes sk{to{background-position:-200% 0}}
+.urlrow{display:flex;gap:6px}.urlrow input{flex:1;min-width:0}
+
+/* Detay */
+.dph{border-radius:14px;margin-bottom:12px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0}
+.tile{background:var(--s2);border-radius:12px;padding:10px 12px}
+.tile span{font-size:12px;color:var(--tx2);display:block;margin-bottom:2px}
+.tile b{font-size:15px}
+.qbig{display:flex;align-items:center;justify-content:space-between;gap:10px;background:linear-gradient(120deg,color-mix(in srgb,var(--c) 22%,var(--s2)),var(--s2));border-radius:14px;padding:12px 14px}
+.qbig .q{background:var(--s1)}
+.qbig .qb{width:40px;height:40px;font-size:22px}
+.qbig .qn{font-size:22px;width:70px;height:40px}
+.sec{font-size:13px;font-weight:700;color:var(--tx2);margin:16px 0 8px;text-transform:uppercase;letter-spacing:.6px}
+.hist{display:flex;flex-direction:column;gap:4px;max-height:170px;overflow:auto}
+.hr{display:flex;justify-content:space-between;font-size:13px;padding:6px 10px;border-radius:9px;background:var(--s2)}
+.hr b.p{color:var(--ok)}.hr b.m{color:var(--bad)}
+.hr span{color:var(--tx3)}
+.desc{color:var(--tx2);line-height:1.65;font-size:14px;white-space:pre-wrap}
+
+/* Alışveriş listesi */
+.buy{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd);animation:rise .35s var(--ease) both;animation-delay:calc(var(--i,0)*40ms)}
+.buy .bi{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 22%,transparent);flex:none;font-size:18px}
+.buy .bn{flex:1;min-width:0}
+.buy .bn b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.buy .bn small{color:var(--tx3);font-size:12px}
+.buy .bq{font-weight:800;color:var(--p2);white-space:nowrap;text-align:right;font-size:14px}
+.buy .bq small{display:block;color:var(--tx3);font-weight:500;font-size:11.5px}
+.total{display:flex;justify-content:space-between;margin-top:14px;font-weight:700;font-size:15px}
+.total b{background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:18px}
+
+/* Ayarlar */
+.set{display:grid;gap:14px}
+.set .grp{background:var(--s2);border-radius:14px;padding:14px}
+.set .grp .lbl{margin-bottom:10px}
+.set .btns{display:flex;gap:8px;flex-wrap:wrap}
+.set select{width:100%;background-color:var(--s1)}
+.usage{font-size:12px;color:var(--tx3);margin-top:10px}
+.meter{height:6px;border-radius:6px;background:var(--s1);overflow:hidden;margin-top:5px}
+.meter i{display:block;height:100%;background:var(--g)}
+
+/* Bildirim */
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,110px);display:flex;align-items:center;gap:12px;background:var(--tx);color:var(--bg);padding:11px 14px 11px 18px;border-radius:14px;font-weight:600;font-size:14px;transition:transform .4s var(--ease),opacity .3s;z-index:99;opacity:0;box-shadow:0 18px 40px -14px rgba(0,0,0,.6);max-width:calc(100vw - 32px)}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.toast button{border:0;background:var(--g);background-size:250% 100%;color:#fff;font-size:13px;font-weight:700;font-family:inherit;padding:8px 12px;border-radius:9px;cursor:pointer}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--bd2);border-top-color:var(--p2);border-radius:50%;animation:rot .7s linear infinite;vertical-align:-2px;flex:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+@media(max-width:640px){
+  .top .lblx{display:none}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:11px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .st{padding:11px 12px}.st .si{width:36px;height:36px;font-size:17px}.st b{font-size:20px}
+  .grid.list .ph{width:84px}
+  .qn{width:40px}
+  .md{padding:1.1rem;border-radius:18px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bgfx" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="wrap">
+  <header class="top">
+    <div class="logo"><div class="lg">🔧</div><div><h1 data-i="app"></h1><div class="sub" data-i="tagline"></div></div></div>
+    <div class="acts">
+      <button class="btn" onclick="shopList()">🛒 <span class="lblx" data-i="shop"></span><span class="cnt" id="shopN"></span></button>
+      <select id="langSel" onchange="setLang(this.value)" aria-label="Language">
+        <option value="tr">🇹🇷 Türkçe</option><option value="en">🇬🇧 English</option><option value="de">🇩🇪 Deutsch</option>
+      </select>
+      <button class="btn icon" id="thm" onclick="toggleTheme()" data-it="theme">☀️</button>
+      <button class="btn icon" onclick="openSettings()" data-it="settings">⚙️</button>
+      <button class="btn pri" onclick="openForm()">＋ <span data-i="newPart"></span></button>
+    </div>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <div class="tools">
+    <div class="sw" id="sw"><span class="ico">🔎</span><input id="q" data-ip="searchPh" oninput="onSearch()" autocomplete="off"><kbd>/</kbd><button class="clr" onclick="$('q').value='';onSearch();$('q').focus()" aria-label="clear">✕</button></div>
+    <select id="stf" onchange="grid();stats()"></select>
+    <select id="srt" onchange="grid()"></select>
+    <div class="seg" role="group"><button data-v="grid" onclick="setView('grid')" data-it="gridView">▦</button><button data-v="list" onclick="setView('list')" data-it="listView">☰</button></div>
+  </div>
+  <div id="catbar"></div>
+  <div class="chips" id="chips"></div>
+  <div class="rcount" id="rcount"></div>
+  <main class="grid" id="grid"></main>
+  <footer class="foot" data-i="shortcuts"></footer>
+</div>
+
+<div class="ov" id="ov" onclick="if(event.target===this)closeM()"><div class="md" id="md" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" role="status"></div>
+<input type="file" id="imp" accept=".json,application/json" hidden onchange="importData(this)">
+<input type="file" id="imgFile" accept="image/*" hidden onchange="readImg(this.files[0]);this.value=''">
+
+<script>
+/* ===================== Diller ===================== */
+const I18N={
+tr:{app:'Komponent Depo',tagline:'Parçalarını say, bul, eksikleri gör',shop:'Alınacaklar',newPart:'Yeni parça',searchPh:'Parça, kategori, konum veya not ara…',
+allStock:'Tüm stoklar',st_ok:'Yeterli',st_low:'Az stok',st_out:'Tükendi',favs:'⭐ Favoriler',
+sort_new:'En yeni',sort_upd:'Son güncellenen',sort_az:'Ada göre A-Z',sort_qa:'Adet: azdan çoğa',sort_qd:'Adet: çoktan aza',sort_val:'Stok değeri (yüksek)',
+all:'Hepsi',s_kinds:'Parça çeşidi',s_total:'Toplam adet',s_low:'Az stok',s_out:'Tükendi',s_val:'Tahmini değer',
+noDesc:'Açıklama yok',edit:'Düzenle',del:'Sil',dup:'Kopyala',fav:'Favori',
+notFound:'"{q}" depoda yok',notFoundHint:'Yazımı kontrol et ya da yeni parça olarak ekle.',addQ:'"{q}" ekle',
+noFilter:'Bu filtrede parça yok',noFilterHint:'Filtreleri temizle veya yeni parça ekle.',clearFilters:'Filtreleri temizle',
+emptyT:'Depon boş',emptyD:'İlk parçanı ekle — adını yazman yeter, fotoğrafı otomatik bulunur.',loadDemo:'Örnek verileri yükle',
+showing:'{n} parça gösteriliyor',outToast:'{n} tükendi — alınacaklara eklendi',deleted:'"{n}" silindi',undo:'Geri al',restored:'Geri alındı',
+category:'Kategori',status:'Durum',qty:'Adet',warnAt:'uyarı ≤ {n}',location:'Konum',unitPrice:'Birim fiyat',stockVal:'Stok değeri',package:'Kılıf / Paket',
+history:'Stok geçmişi',noHistory:'Henüz hareket yok',dsSearch:'Datasheet ara',buySearch:'Fiyat ara',openLink:'Bağlantıyı aç',
+shopHint:'Önerilen miktar, uyarı eşiğinin 2 katına tamamlar. "Aldım" deyince stoğa eklenir.',noMissing:'Eksik yok',noMissingD:'Tüm parçaların eşik değerinin üstünde.',
+have:'elde {n}',pcs:'{n} adet',bought:'Aldım',boughtToast:'{n} stoğa eklendi',estTotal:'Tahmini tutar',close:'Kapat',copyList:'Listeyi kopyala',copied:'Liste kopyalandı',
+editTitle:'Parçayı düzenle',f_name:'Parça adı *',f_namePh:'örn. ESP32, BC547, HC-SR04…',photo:'Fotoğraf',
+photoHint:'Parçanın adını yaz — fotoğraf internetten otomatik bulunur. Ya da buraya fotoğraf sürükle.',searching:'Fotoğraf aranıyor…',
+offline:'İnternete ulaşılamadı. Fotoğraf yükleyebilir ya da adres yapıştırabilirsin.',noPhoto:'Fotoğraf bulunamadı. İngilizce adıyla dene (örn. "soil moisture sensor").',
+photoFail:'Fotoğraf yüklenemedi',pickOne:'Beğendiğine tıkla:',upload:'Yükle',urlPh:'veya fotoğraf adresi yapıştır: https://…',webSearch:'Google Görseller',
+dragHint:'Fotoğrafı sürükleyerek ortala · tekerlek/kaydırıcı ile yakınlaştır · çift tık sıfırlar · Ctrl+V ile yapıştır',
+fitCover:'Doldur',fitContain:'Sığdır',bgw:'Beyaz zemin',bgd:'Koyu zemin',bgn:'Renkli zemin',reset:'Ortala',rotate:'Döndür',removePhoto:'Kaldır',dropHere:'Fotoğrafı buraya bırak',
+uploaded:'Fotoğraf eklendi — konumunu ayarlayabilirsin',lowL:'Uyarı ≤',locPh:'örn. Çekmece A',priceL:'Birim fiyat ({c})',pkgPh:'örn. DIP-8, SMD 0805',
+link:'Bağlantı (satıcı / datasheet)',descL:'Açıklama / notlar',descPh:'Teknik özellikler, nereden aldım, hangi projede…',
+cancel:'Vazgeç',save:'Kaydet',add:'Ekle',nameReq:'Parça adı gerekli',saved:'Kaydedildi',added:'{n} eklendi',auto:'✨ otomatik',
+exists:'"{n}" zaten depoda ({q} adet).',openIt:'Onu aç',duplicated:'Kopya oluşturuldu',copySuffix:' (kopya)',
+settings:'Ayarlar',language:'Dil',currency:'Para birimi',theme:'Tema',dark:'🌙 Koyu',light:'☀️ Açık',data:'Veri',
+backup:'⬇️ Yedekle (JSON)',restore:'⬆️ Yedek yükle',csv:'📊 Excel (CSV)',clearAll:'🗑️ Tümünü sil',clearQ:'Tüm parçalar silinecek. Emin misin?',cleared:'Tüm parçalar silindi',
+backupDone:'Yedek indirildi',importQ:'{n} parça yüklenecek. Mevcut liste değiştirilsin mi?',imported:'Yedek yüklendi',badFile:'Geçersiz yedek dosyası',
+storageFull:'Depolama dolu! Bazı yüklenen fotoğrafları kaldır veya yedek al.',usage:'Kullanılan alan: {u}',
+shortcuts:'Kısayollar:  /  ara  ·  N  yeni parça  ·  Esc  kapat  ·  Shift + (+/−)  10’ar değiştir',gridView:'Kart görünümü',listView:'Liste görünümü',
+c_cap:'Kapasitör',c_res:'Direnç',c_tr:'Transistör',c_ic:'Entegre (IC)',c_led:'LED / Ekran',c_sen:'Sensör',c_mod:'Modül / Kart',c_cab:'Kablo / Konnektör',c_pwr:'Güç',c_mot:'Motor / Röle',c_tool:'Alet / Ekipman',c_oth:'Diğer',
+d1:'ATmega328P tabanlı geliştirme kartı. 14 dijital I/O, 6 analog giriş, USB ile programlama.',d2:'WiFi + Bluetooth destekli çift çekirdekli mikrodenetleyici.',d3:'1/4W karbon film, %5 tolerans. Pull-up / pull-down için.',d4:'Dijital sıcaklık (-40~80°C) ve nem (%0-100) sensörü.',d5:'Standart 5mm kırmızı LED, 20mA.',d6:'Mesafe ölçer, 2–400 cm, 5V.'},
+en:{app:'Component Vault',tagline:'Count, find and restock your parts',shop:'Shopping list',newPart:'New part',searchPh:'Search parts, categories, locations, notes…',
+allStock:'All stock',st_ok:'In stock',st_low:'Low stock',st_out:'Out of stock',favs:'⭐ Favorites',
+sort_new:'Newest',sort_upd:'Recently updated',sort_az:'Name A–Z',sort_qa:'Qty: low → high',sort_qd:'Qty: high → low',sort_val:'Stock value (high)',
+all:'All',s_kinds:'Part types',s_total:'Total pieces',s_low:'Low stock',s_out:'Out of stock',s_val:'Estimated value',
+noDesc:'No description',edit:'Edit',del:'Delete',dup:'Duplicate',fav:'Favorite',
+notFound:'"{q}" isn’t in your vault',notFoundHint:'Check the spelling or add it as a new part.',addQ:'Add "{q}"',
+noFilter:'No parts match this filter',noFilterHint:'Clear the filters or add a new part.',clearFilters:'Clear filters',
+emptyT:'Your vault is empty',emptyD:'Add your first part — just type its name, the photo is found automatically.',loadDemo:'Load sample data',
+showing:'Showing {n} parts',outToast:'{n} is out — added to shopping list',deleted:'"{n}" deleted',undo:'Undo',restored:'Restored',
+category:'Category',status:'Status',qty:'Quantity',warnAt:'alert ≤ {n}',location:'Location',unitPrice:'Unit price',stockVal:'Stock value',package:'Package',
+history:'Stock history',noHistory:'No movements yet',dsSearch:'Find datasheet',buySearch:'Compare prices',openLink:'Open link',
+shopHint:'Suggested amount tops up to 2× the alert level. Tap "Bought" to add it to stock.',noMissing:'Nothing missing',noMissingD:'All parts are above their alert level.',
+have:'have {n}',pcs:'{n} pcs',bought:'Bought',boughtToast:'{n} added to stock',estTotal:'Estimated total',close:'Close',copyList:'Copy list',copied:'List copied',
+editTitle:'Edit part',f_name:'Part name *',f_namePh:'e.g. ESP32, BC547, HC-SR04…',photo:'Photo',
+photoHint:'Type the part name — a photo is found online automatically. Or drop an image here.',searching:'Searching photos…',
+offline:'Can’t reach the internet. Upload a photo or paste an image URL.',noPhoto:'No photo found. Try the English name (e.g. "soil moisture sensor").',
+photoFail:'Could not load photo',pickOne:'Click the one you like:',upload:'Upload',urlPh:'or paste an image URL: https://…',webSearch:'Google Images',
+dragHint:'Drag the photo to center it · wheel/slider to zoom · double-click resets · Ctrl+V to paste',
+fitCover:'Fill',fitContain:'Fit',bgw:'White backdrop',bgd:'Dark backdrop',bgn:'Color backdrop',reset:'Center',rotate:'Rotate',removePhoto:'Remove',dropHere:'Drop the photo here',
+uploaded:'Photo added — adjust its position',lowL:'Alert ≤',locPh:'e.g. Drawer A',priceL:'Unit price ({c})',pkgPh:'e.g. DIP-8, SMD 0805',
+link:'Link (shop / datasheet)',descL:'Description / notes',descPh:'Specs, where I bought it, which project…',
+cancel:'Cancel',save:'Save',add:'Add',nameReq:'Part name is required',saved:'Saved',added:'{n} added',auto:'✨ auto',
+exists:'"{n}" is already in your vault ({q} pcs).',openIt:'Open it',duplicated:'Duplicate created',copySuffix:' (copy)',
+settings:'Settings',language:'Language',currency:'Currency',theme:'Theme',dark:'🌙 Dark',light:'☀️ Light',data:'Data',
+backup:'⬇️ Backup (JSON)',restore:'⬆️ Restore backup',csv:'📊 Excel (CSV)',clearAll:'🗑️ Delete all',clearQ:'All parts will be deleted. Are you sure?',cleared:'All parts deleted',
+backupDone:'Backup downloaded',importQ:'Load {n} parts and replace the current list?',imported:'Backup restored',badFile:'Invalid backup file',
+storageFull:'Storage full! Remove some uploaded photos or export a backup.',usage:'Storage used: {u}',
+shortcuts:'Shortcuts:  /  search  ·  N  new part  ·  Esc  close  ·  Shift + (+/−)  change by 10',gridView:'Card view',listView:'List view',
+c_cap:'Capacitor',c_res:'Resistor',c_tr:'Transistor',c_ic:'IC / Chip',c_led:'LED / Display',c_sen:'Sensor',c_mod:'Module / Board',c_cab:'Cable / Connector',c_pwr:'Power',c_mot:'Motor / Relay',c_tool:'Tool / Equipment',c_oth:'Other',
+d1:'ATmega328P development board. 14 digital I/O, 6 analog inputs, USB programming.',d2:'Dual-core microcontroller with WiFi + Bluetooth.',d3:'1/4W carbon film, 5% tolerance. For pull-up / pull-down.',d4:'Digital temperature (-40~80°C) and humidity (0-100%) sensor.',d5:'Standard 5mm red LED, 20mA.',d6:'Distance sensor, 2–400 cm, 5V.'},
+de:{app:'Bauteil-Lager',tagline:'Teile zählen, finden und nachkaufen',shop:'Einkaufsliste',newPart:'Neues Teil',searchPh:'Teile, Kategorien, Orte, Notizen suchen…',
+allStock:'Alle Bestände',st_ok:'Vorrätig',st_low:'Knapp',st_out:'Leer',favs:'⭐ Favoriten',
+sort_new:'Neueste',sort_upd:'Zuletzt geändert',sort_az:'Name A–Z',sort_qa:'Menge: aufsteigend',sort_qd:'Menge: absteigend',sort_val:'Lagerwert (hoch)',
+all:'Alle',s_kinds:'Teilearten',s_total:'Stück gesamt',s_low:'Knapp',s_out:'Leer',s_val:'Geschätzter Wert',
+noDesc:'Keine Beschreibung',edit:'Bearbeiten',del:'Löschen',dup:'Duplizieren',fav:'Favorit',
+notFound:'„{q}“ ist nicht im Lager',notFoundHint:'Schreibweise prüfen oder als neues Teil anlegen.',addQ:'„{q}“ hinzufügen',
+noFilter:'Keine Teile für diesen Filter',noFilterHint:'Filter zurücksetzen oder neues Teil anlegen.',clearFilters:'Filter zurücksetzen',
+emptyT:'Dein Lager ist leer',emptyD:'Füge dein erstes Teil hinzu — Name reicht, das Foto wird automatisch gesucht.',loadDemo:'Beispieldaten laden',
+showing:'{n} Teile angezeigt',outToast:'{n} ist leer — zur Einkaufsliste hinzugefügt',deleted:'„{n}“ gelöscht',undo:'Rückgängig',restored:'Wiederhergestellt',
+category:'Kategorie',status:'Status',qty:'Menge',warnAt:'Warnung ≤ {n}',location:'Ort',unitPrice:'Stückpreis',stockVal:'Lagerwert',package:'Gehäuse',
+history:'Bestandsverlauf',noHistory:'Noch keine Bewegungen',dsSearch:'Datenblatt suchen',buySearch:'Preise vergleichen',openLink:'Link öffnen',
+shopHint:'Vorschlag füllt auf das 2-fache der Warnschwelle auf. „Gekauft“ bucht es ins Lager.',noMissing:'Nichts fehlt',noMissingD:'Alle Teile liegen über der Warnschwelle.',
+have:'vorhanden {n}',pcs:'{n} Stk.',bought:'Gekauft',boughtToast:'{n} zum Bestand hinzugefügt',estTotal:'Geschätzte Summe',close:'Schließen',copyList:'Liste kopieren',copied:'Liste kopiert',
+editTitle:'Teil bearbeiten',f_name:'Teilename *',f_namePh:'z. B. ESP32, BC547, HC-SR04…',photo:'Foto',
+photoHint:'Teilenamen eingeben — ein Foto wird automatisch online gesucht. Oder Bild hierher ziehen.',searching:'Suche Fotos…',
+offline:'Keine Internetverbindung. Foto hochladen oder Bild-URL einfügen.',noPhoto:'Kein Foto gefunden. Versuch den englischen Namen (z. B. „soil moisture sensor“).',
+photoFail:'Foto konnte nicht geladen werden',pickOne:'Klick auf das passende:',upload:'Hochladen',urlPh:'oder Bild-URL einfügen: https://…',webSearch:'Google Bilder',
+dragHint:'Foto ziehen zum Zentrieren · Mausrad/Regler zum Zoomen · Doppelklick setzt zurück · Strg+V zum Einfügen',
+fitCover:'Füllen',fitContain:'Einpassen',bgw:'Weißer Hintergrund',bgd:'Dunkler Hintergrund',bgn:'Farbiger Hintergrund',reset:'Zentrieren',rotate:'Drehen',removePhoto:'Entfernen',dropHere:'Foto hier ablegen',
+uploaded:'Foto hinzugefügt — Ausschnitt anpassen',lowL:'Warnung ≤',locPh:'z. B. Schublade A',priceL:'Stückpreis ({c})',pkgPh:'z. B. DIP-8, SMD 0805',
+link:'Link (Shop / Datenblatt)',descL:'Beschreibung / Notizen',descPh:'Technische Daten, Bezugsquelle, Projekt…',
+cancel:'Abbrechen',save:'Speichern',add:'Hinzufügen',nameReq:'Teilename erforderlich',saved:'Gespeichert',added:'{n} hinzugefügt',auto:'✨ auto',
+exists:'„{n}“ ist schon im Lager ({q} Stk.).',openIt:'Öffnen',duplicated:'Duplikat erstellt',copySuffix:' (Kopie)',
+settings:'Einstellungen',language:'Sprache',currency:'Währung',theme:'Design',dark:'🌙 Dunkel',light:'☀️ Hell',data:'Daten',
+backup:'⬇️ Sichern (JSON)',restore:'⬆️ Backup laden',csv:'📊 Excel (CSV)',clearAll:'🗑️ Alles löschen',clearQ:'Alle Teile werden gelöscht. Sicher?',cleared:'Alle Teile gelöscht',
+backupDone:'Backup heruntergeladen',importQ:'{n} Teile laden und aktuelle Liste ersetzen?',imported:'Backup geladen',badFile:'Ungültige Backup-Datei',
+storageFull:'Speicher voll! Hochgeladene Fotos entfernen oder Backup erstellen.',usage:'Belegter Speicher: {u}',
+shortcuts:'Tastenkürzel:  /  Suche  ·  N  neues Teil  ·  Esc  schließen  ·  Shift + (+/−)  in 10er-Schritten',gridView:'Kartenansicht',listView:'Listenansicht',
+c_cap:'Kondensator',c_res:'Widerstand',c_tr:'Transistor',c_ic:'IC / Chip',c_led:'LED / Display',c_sen:'Sensor',c_mod:'Modul / Board',c_cab:'Kabel / Stecker',c_pwr:'Stromversorgung',c_mot:'Motor / Relais',c_tool:'Werkzeug',c_oth:'Sonstiges',
+d1:'Entwicklungsboard mit ATmega328P. 14 digitale I/O, 6 analoge Eingänge, USB-Programmierung.',d2:'Dual-Core-Mikrocontroller mit WLAN + Bluetooth.',d3:'1/4 W Kohleschicht, 5 % Toleranz. Für Pull-up / Pull-down.',d4:'Digitaler Temperatur- (-40~80 °C) und Feuchtesensor (0-100 %).',d5:'Standard-5-mm-LED rot, 20 mA.',d6:'Abstandssensor, 2–400 cm, 5 V.'}
+};
+const LOC={tr:'tr-TR',en:'en-US',de:'de-DE'};
+const CURS={TRY:'₺',USD:'$',EUR:'€',GBP:'£'};
+
+/* ===================== Sabitler ===================== */
+const CATS={cap:['⚡','#22d3ee'],res:['🟫','#f59e0b'],tr:['🔺','#f43f5e'],ic:['🔲','#a78bfa'],led:['💡','#facc15'],sen:['📡','#34d399'],mod:['🧩','#3b82f6'],cab:['🔌','#94a3b8'],pwr:['🔋','#84cc16'],mot:['⚙️','#e879f9'],tool:['🛠️','#fb923c'],oth:['📦','#a8a29e']};
+const OLDCAT={'Kapasitör':'cap','Resistor':'res','Transistor':'tr','Entegre (IC)':'ic','LED / Ekran':'led','Sensör':'sen','Modül':'mod','Kablo / Konnektör':'cab','Güç':'pwr','Alet / Ekipman':'tool','Diğer':'oth'};
+const GUESS=[
+ [/resist|direnç|widerstand|\bohm|Ω|potans|potent|trimpot/i,'res'],
+ [/capac|kapasit|konden|\d\s?(µ|u|n|p)f\b|elektrolit/i,'cap'],
+ [/transist|mosfet|\bbc\d{3}|\b2n\d{4}|\birf\w*|\btip\d{2,3}|igbt/i,'tr'],
+ [/sens|dht\d|hc-?sr|bmp\d|bme\d|mpu|\bldr\b|\bpir\b|ds18b20|hall|ultrason|gyro|accel|ivme/i,'sen'],
+ [/\bled\b|lcd|oled|display|ekran|7 ?seg|neopixel|ws281|tft/i,'led'],
+ [/motor|servo|step|röle|relay|relais|buzzer|sg90|l298/i,'mot'],
+ [/\bpil\b|batar|battery|akku|lipo|18650|regülat|regulat|adapt|power|güç|ams1117|lm2596|78\d\d|buck|boost|charger|tp4056/i,'pwr'],
+ [/ne555|\b555\b|\blm\d{3}|atmega|attiny|74hc|\bic\b|entegre|op-?amp|cd40|uln2003|\bmax\d{3,}|pcf85/i,'ic'],
+ [/arduino|esp.?32|esp.?8266|esp-?01|raspberry|\bpico\b|nodemcu|wemos|stm32|shield|module|modül|modul|board|\bkart\b|devkit/i,'mod'],
+ [/kablo|cable|kabel|jumper|header|konnekt|connector|stecker|jack|terminal|dupont|\bjst\b/i,'cab'],
+ [/havya|multimet|pense|\btool|alet|solder|lehim|breadboard|osilos|oscillo|tornavida|screwdriver/i,'tool']
+];
+const DEFCROP={x:0,y:0,z:1,r:0,fit:'cover',bg:'w'};
+const K_DATA='komponent_depo',K_THEME='komponent_theme',K_LANG='kd_lang',K_VIEW='kd_view',K_CUR='kd_cur';
+
+/* ===================== Yardımcılar ===================== */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}};
+let items=[],catSel='',view='grid',lang='tr',cur='TRY',filling=false;
+
+function t(k,v){let s=I18N[lang]?.[k]??I18N.tr[k]??k;if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s}
+const cn=k=>t('c_'+k);
+const ci=k=>CATS[k]||CATS.oth;
+let _mf;
+function money(v){if(!_mf||_mf._k!==lang+cur){_mf=new Intl.NumberFormat(LOC[lang],{style:'currency',currency:cur,currencyDisplay:'narrowSymbol',minimumFractionDigits:0,maximumFractionDigits:2});_mf._k=lang+cur}return _mf.format(v)}
+const num=v=>Number(v).toLocaleString(LOC[lang]);
+const safeUrl=u=>/^https?:\/\//i.test(u||'')?u:'';
+const safeImg=u=>/^(https?:\/\/|data:image\/)/i.test(u||'')?u:'';
+const gImg=q=>'https://www.google.com/search?tbm=isch&q='+encodeURIComponent(q||'');
+function stock(i){return i.qty===0?'out':i.qty<=(i.low||0)?'low':'ok'}
+const needBuy=i=>Math.max(1,(i.low||1)*2-i.qty);
+const pct=i=>Math.min(100,Math.round(i.qty/Math.max(1,(i.low||1)*3)*100));
+const guess=n=>{for(const[r,k]of GUESS)if(r.test(n))return k;return ''};
+function cropCss(c){c={...DEFCROP,...c};return `object-fit:${c.fit};transform:translate(${c.x}%,${c.y}%) rotate(${c.r}deg) scale(${c.z})`}
+function hl(s,q){s=String(s??'');if(!q)return esc(s);const lo=s.toLowerCase();if(lo.length!==s.length)return esc(s);let o='',i=0,j;while((j=lo.indexOf(q,i))>-1){o+=esc(s.slice(i,j))+'<mark>'+esc(s.slice(j,j+q.length))+'</mark>';i=j+q.length}return o+esc(s.slice(i))}
+function ago(ts){const rtf=new Intl.RelativeTimeFormat(LOC[lang],{numeric:'auto'}),s=(ts-Date.now())/1000;for(const[u,n]of[['year',31536000],['month',2592000],['day',86400],['hour',3600],['minute',60]])if(Math.abs(s)>=n)return rtf.format(Math.round(s/n),u);return rtf.format(0,'second')}
+
+/* ===================== Kayıt ===================== */
+function migrate(i,n){
+  return{id:+i.id||Date.now()+n,name:String(i.name||'?'),cat:CATS[i.cat]?i.cat:(OLDCAT[i.cat]||'oth'),qty:Math.max(0,parseInt(i.qty)||0),low:Math.max(0,parseInt(i.low)||0),
+    loc:i.loc||'',price:parseFloat(i.price)||0,desc:i.desc||'',img:safeImg(i.img),crop:{...DEFCROP,...(i.crop||{})},pkg:i.pkg||'',url:i.url||'',fav:!!i.fav,
+    noimg:i.noimg?1:0,hist:Array.isArray(i.hist)?i.hist.slice(0,25):[],upd:+i.upd||+i.id||0};
+}
+function demo(){const n=Date.now();return[
+ ['Arduino Uno R3','mod',3,1,'Raf 1',320,'d1'],['ESP32 DevKit','mod',2,2,'Raf 1',180,'d2'],['10kΩ Resistor','res',120,20,'Çekmece A',.3,'d3'],
+ ['DHT22','sen',1,2,'Kutu 3',95,'d4'],['HC-SR04','sen',4,1,'Kutu 3',45,'d6'],['5mm LED','led',0,10,'Çekmece B',1.5,'d5']
+].map(([name,cat,qty,low,loc,price,d],k)=>migrate({id:n-k*1000,name,cat,qty,low,loc,price,desc:t(d)},k))}
+function load(){
+  lang=ls.get(K_LANG)||((navigator.language||'').startsWith('de')?'de':(navigator.language||'').startsWith('en')?'en':'tr');
+  cur=ls.get(K_CUR)||'TRY';view=ls.get(K_VIEW)||'grid';
+  try{const d=ls.get(K_DATA);items=d?JSON.parse(d).map(migrate):demo()}catch(e){items=demo()}
+  /* URL ile ayar: ?lang=en&theme=light&add=ESP32 */
+  const P=new URLSearchParams(location.search);
+  if(I18N[P.get('lang')])lang=P.get('lang');
+  setTheme(['dark','light'].includes(P.get('theme'))?P.get('theme'):ls.get(K_THEME)||'dark',true);
+  applyStatic();render();autoFill();
+  if(P.get('add'))openForm(null,P.get('add'));
+}
+let _st;
+function save(){clearTimeout(_st);if(!ls.set(K_DATA,JSON.stringify(items))){toast(t('storageFull'));return false}return true}
+function saveSoon(){clearTimeout(_st);_st=setTimeout(save,300)}
+addEventListener('pagehide',save);
+
+/* ===================== Dil / tema / görünüm ===================== */
+function applyStatic(){
+  document.documentElement.lang=lang;document.title=t('app');$('langSel').value=lang;
+  document.querySelectorAll('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));
+  document.querySelectorAll('[data-ip]').forEach(e=>e.placeholder=t(e.dataset.ip));
+  document.querySelectorAll('[data-it]').forEach(e=>{e.title=t(e.dataset.it);e.setAttribute('aria-label',e.title)});
+  const sv=$('stf').value,so=$('srt').value;
+  $('stf').innerHTML=[['',t('allStock')],['ok',t('st_ok')],['low',t('st_low')],['out',t('st_out')],['fav',t('favs')]].map(([v,l])=>`<option value="${v}">${l}</option>`).join('');
+  $('srt').innerHTML=['new','upd','az','qa','qd','val'].map(v=>`<option value="${v}">${t('sort_'+v)}</option>`).join('');
+  $('stf').value=sv;$('srt').value=so||'new';
+  buildStats();
+}
+function setLang(l){
+  lang=l;ls.set(K_LANG,l);applyStatic();render();
+  const k=$('md').dataset.kind;if(k==='settings')openSettings();else if(k==='shop')shopList();else if(k==='detail')detail(+$('md').dataset.id);else if(k)closeM();
+}
+function setTheme(th,init){
+  document.documentElement.dataset.theme=th;const b=$('thm');b.textContent=th==='dark'?'☀️':'🌙';
+  document.querySelector('meta[name=theme-color]').content=th==='dark'?'#0c0a1d':'#f5f3ff';
+  if(!init){b.classList.remove('spin');void b.offsetWidth;b.classList.add('spin');ls.set(K_THEME,th)}
+}
+function toggleTheme(){setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');if($('md').dataset.kind==='settings')openSettings()}
+function setView(v){view=v;ls.set(K_VIEW,v);grid()}
+
+/* ===================== Görünüm ===================== */
+function render(){stats();chips();grid()}
+function buildStats(){
+  $('stats').innerHTML=[['kinds','📦','#8b5cf6',''],['total','🔢','#22d3ee',''],['low','⚠️','var(--warn)','low'],['out','⛔','var(--bad)','out'],['val','💰','#34d399','']]
+   .map(([k,ic,c,f])=>`<${f?'button':'div'} class="st" id="st_${k}" style="--c:${c}"${f?` onclick="statF('${f}')"`:''}><div class="si">${ic}</div><div><b data-v="0">0</b><span>${t(k==='kinds'?'s_kinds':k==='total'?'s_total':'s_'+k)}</span></div></${f?'button':'div'}>`).join('');
+}
+function statF(f){$('stf').value=$('stf').value===f?'':f;grid();stats();$('grid').scrollIntoView({block:'start'})}
+function countUp(el,to,fmt){
+  const from=+el.dataset.v||0;el.dataset.v=to;cancelAnimationFrame(el._raf);
+  if(from===to||matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=fmt(to);return}
+  const t0=performance.now(),D=550;
+  const step=now=>{const p=Math.min(1,(now-t0)/D),e=1-Math.pow(1-p,3);el.textContent=fmt(from+(to-from)*e);if(p<1)el._raf=requestAnimationFrame(step)};
+  el._raf=requestAnimationFrame(step);
+}
+function stats(){
+  const low=items.filter(i=>stock(i)==='low').length,out=items.filter(i=>stock(i)==='out').length;
+  const val=items.reduce((s,i)=>s+i.qty*(i.price||0),0),n=v=>num(Math.round(v));
+  countUp($('st_kinds').querySelector('b'),items.length,n);
+  countUp($('st_total').querySelector('b'),items.reduce((s,i)=>s+i.qty,0),n);
+  countUp($('st_low').querySelector('b'),low,n);
+  countUp($('st_out').querySelector('b'),out,n);
+  countUp($('st_val').querySelector('b'),val,v=>val?money(v):'—');
+  const f=$('stf').value;$('st_low').classList.toggle('on',f==='low');$('st_out').classList.toggle('on',f==='out');
+  $('shopN').textContent=low+out||'';
+}
+function chips(){
+  const cnt={};items.forEach(i=>cnt[i.cat]=(cnt[i.cat]||0)+1);
+  const cats=Object.keys(CATS).filter(k=>cnt[k]);
+  if(catSel&&!cnt[catSel])catSel='';
+  $('catbar').innerHTML=items.length?`<div class="cbar${catSel?' sel':''}">${cats.map(k=>`<button class="${k===catSel?'on':''}" style="--c:${ci(k)[1]};flex:${cnt[k]}" title="${esc(cn(k))}: ${cnt[k]}" onclick="setCat('${k}')"></button>`).join('')}</div>`:'';
+  $('chips').innerHTML=items.length?`<button class="chip all${catSel?'':' on'}" onclick="setCat('')">${t('all')}<small>${items.length}</small></button>`+
+    cats.map(k=>`<button class="chip${k===catSel?' on':''}" style="--c:${ci(k)[1]}" onclick="setCat('${k}')">${ci(k)[0]} ${esc(cn(k))}<small>${cnt[k]}</small></button>`).join(''):'';
+}
+function setCat(k){catSel=k&&catSel===k?'':k;chips();grid()}
+function clearFilters(){$('q').value='';$('stf').value='';catSel='';onSearch();chips();stats()}
+function onSearch(){$('sw').classList.toggle('has',!!$('q').value);grid()}
+const curQ=()=>$('q').value.trim().toLowerCase();
+function filtered(){
+  const q=curQ(),sf=$('stf').value,so=$('srt').value;
+  const f=items.filter(i=>(!catSel||i.cat===catSel)&&(!sf||(sf==='fav'?i.fav:stock(i)===sf))&&
+    (!q||[i.name,cn(i.cat),i.loc,i.desc,i.pkg].some(x=>(x||'').toLowerCase().includes(q))));
+  const v=i=>i.qty*(i.price||0);
+  return f.sort((a,b)=>so==='az'?a.name.localeCompare(b.name,LOC[lang]):so==='qa'?a.qty-b.qty:so==='qd'?b.qty-a.qty:so==='val'?v(b)-v(a):so==='upd'?(b.upd||0)-(a.upd||0):b.id-a.id);
+}
+function grid(){
+  const g=$('grid');g.className='grid '+view;
+  document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.v===view));
+  if(!items.length){
+    $('rcount').textContent='';
+    g.innerHTML=`<div class="empty"><div class="big">🧰</div><h3>${t('emptyT')}</h3><div>${t('emptyD')}</div><div class="btns"><button class="btn pri" onclick="openForm()">＋ ${t('newPart')}</button><button class="btn" onclick="items=demo();save();render();autoFill()">✨ ${t('loadDemo')}</button></div></div>`;return;
+  }
+  const f=filtered(),q=curQ(),raw=$('q').value.trim();
+  $('rcount').textContent=f.length&&f.length!==items.length?t('showing',{n:f.length}):'';
+  if(!f.length){
+    g.innerHTML=`<div class="empty"><div class="big">🔍</div><h3>${q?t('notFound',{q:esc(raw)}):t('noFilter')}</h3><div>${q?t('notFoundHint'):t('noFilterHint')}</div>
+    <div class="btns">${q?`<button class="btn pri" data-pre="${esc(raw)}" onclick="openForm(null,this.dataset.pre)">＋ ${t('addQ',{q:esc(raw)})}</button>`:''}<button class="btn" onclick="clearFilters()">↺ ${t('clearFilters')}</button></div></div>`;
+    return;
+  }
+  g.innerHTML=f.map((i,k)=>card(i,q,k)).join('');
+}
+function imgHTML(i,extra=''){
+  const u=safeImg(i.img);if(!u)return'';
+  return `<img ${extra} referrerpolicy="no-referrer" src="${esc(u)}" alt="" style="${cropCss(i.crop)}" draggable="false" onerror="this.parentElement.classList.remove('hasimg');this.remove()">`;
+}
+function phClass(i){return safeImg(i.img)?` hasimg bg${(i.crop||DEFCROP).bg}`:''}
+function card(i,q,k,na){
+  const s=stock(i),[em,col]=ci(i.cat);
+  return `<article class="card s-${s}${na?' na':''}" style="--c:${col};--i:${Math.min(k,14)}" data-id="${i.id}" tabindex="0" onclick="detail(${i.id})" onkeydown="if(event.key==='Enter'&&event.target===this)detail(${i.id})">
+  <div class="ph${phClass(i)}"><span class="em">${em}</span>${imgHTML(i,'loading="lazy"')}<span class="bdg">${t('st_'+s)}</span>
+   <button class="fav${i.fav?' on':''}" title="${t('fav')}" aria-label="${t('fav')}" onclick="event.stopPropagation();togFav(${i.id},this)">★</button></div>
+  <div class="cb"><div class="inf"><div class="nm" title="${esc(i.name)}">${hl(i.name,q)}</div>
+   <div class="meta"><span class="pill c">${em} ${esc(cn(i.cat))}</span>${i.loc?`<span class="pill">📍 ${hl(i.loc,q)}</span>`:''}${i.pkg?`<span class="pill">▣ ${hl(i.pkg,q)}</span>`:''}${i.price?`<span class="pill">${money(i.price)}</span>`:''}</div>
+   <div class="ds">${i.desc?hl(i.desc,q):`<i class="mut">${t('noDesc')}</i>`}</div></div>
+   <div class="bar"><i style="width:${pct(i)}%"></i></div>
+   <div class="ft" onclick="event.stopPropagation()">${qCtl(i)}
+    <div class="ia"><button class="ib" title="${t('edit')}" onclick="openForm(${i.id})">✏️</button><button class="ib" title="${t('dup')}" onclick="dup(${i.id})">📑</button><button class="ib del" title="${t('del')}" onclick="del(${i.id})">🗑️</button></div></div></div></article>`;
+}
+function qCtl(i){return `<div class="q"><button class="qb" data-id="${i.id}" data-d="-1" aria-label="−1">−</button><input class="qn" data-q="${i.id}" type="number" min="0" inputmode="numeric" value="${i.qty}" aria-label="${t('qty')}" onfocus="this.select()" onchange="setQ(${i.id},this.value)" onkeydown="if(event.key==='Enter')this.blur()"><button class="qb" data-id="${i.id}" data-d="1" aria-label="+1">+</button></div>`}
+function refreshCard(id){const el=document.querySelector(`.card[data-id="${id}"]`),i=items.find(x=>x.id===id);if(el&&i)el.outerHTML=card(i,curQ(),0,true)}
+
+/* ===================== Adet işlemleri ===================== */
+function applyQty(i,nq){
+  nq=Math.max(0,Math.round(nq)||0);const d=nq-i.qty;if(!d)return 0;
+  const now=Date.now(),h=i.hist||(i.hist=[]),l=h[0];
+  i.qty=nq;i.upd=now;
+  if(l&&now-l.t<60000&&Math.sign(l.d)===Math.sign(d)){l.d+=d;l.q=nq;l.t=now}else h.unshift({t:now,d,q:nq});
+  if(h.length>25)h.length=25;saveSoon();return d;
+}
+function chQ(id,d){
+  const i=items.find(x=>x.id===id);if(!i||!applyQty(i,i.qty+d))return false;
+  qtyUI(i);if(i.qty===0&&d<0)toast(t('outToast',{n:i.name}));return i.qty>0||d>0;
+}
+function setQ(id,v){const i=items.find(x=>x.id===id);if(!i)return;const was=i.qty;applyQty(i,+v);qtyUI(i);if(i.qty===0&&was>0)toast(t('outToast',{n:i.name}))}
+function qtyUI(i){
+  const s=stock(i);
+  document.querySelectorAll(`[data-q="${i.id}"]`).forEach(e=>{if(document.activeElement!==e)e.value=i.qty;e.classList.remove('bump');void e.offsetWidth;e.classList.add('bump')});
+  const c=document.querySelector(`.card[data-id="${i.id}"]`);
+  if(c){c.classList.remove('s-ok','s-low','s-out');c.classList.add('s-'+s);c.querySelector('.bdg').textContent=t('st_'+s);c.querySelector('.bar i').style.width=pct(i)+'%'}
+  if($('md').dataset.kind==='detail'&&+$('md').dataset.id===i.id){$('dst').innerHTML=stHTML(s);$('dval').textContent=i.price?money(i.price*i.qty):'—';$('dhist').innerHTML=histHTML(i)}
+  stats();
+}
+/* basılı tutunca hızlanarak artar/azalır */
+let holdT;
+document.addEventListener('pointerdown',e=>{
+  const b=e.target.closest('.qb');if(!b||e.button>0)return;e.preventDefault();
+  const id=+b.dataset.id,d=+b.dataset.d*(e.shiftKey?10:1);let sp=120;
+  if(!chQ(id,d))return;
+  const rep=()=>{if(chQ(id,d))holdT=setTimeout(rep,sp=Math.max(35,sp*.9))};
+  holdT=setTimeout(rep,420);
+});
+['pointerup','pointercancel','blur'].forEach(ev=>addEventListener(ev,()=>clearTimeout(holdT)));
+document.addEventListener('click',e=>{const b=e.target.closest('.qb');if(b&&e.detail===0)chQ(+b.dataset.id,+b.dataset.d)});
+
+function togFav(id,btn){
+  const i=items.find(x=>x.id===id);if(!i)return;i.fav=!i.fav;save();
+  if($('stf').value==='fav')return grid();
+  btn.classList.toggle('on',i.fav);btn.classList.remove('pop');void btn.offsetWidth;btn.classList.add('pop');
+}
+function del(id){
+  const k=items.findIndex(x=>x.id===id);if(k<0)return;const it=items[k];
+  const go=()=>{items.splice(items.indexOf(it),1);save();render();
+    toast(t('deleted',{n:it.name}),t('undo'),()=>{items.splice(Math.min(k,items.length),0,it);save();render();toast(t('restored'))})};
+  if($('md').dataset.kind)closeM();
+  const el=document.querySelector(`.card[data-id="${id}"]`);
+  if(el){el.classList.add('bye');setTimeout(go,260)}else go();
+}
+function dup(id){
+  const i=items.find(x=>x.id===id);if(!i)return;
+  const c={...structuredClone(i),id:Date.now(),name:i.name+t('copySuffix'),hist:[],upd:Date.now()};
+  items.push(c);save();render();toast(t('duplicated'));openForm(c.id);
+}
+
+/* ===================== Modal ===================== */
+function showM(h,kind,id,cls){const m=$('md');m.innerHTML=h;m.className='md '+(cls||'');m.dataset.kind=kind||'';m.dataset.id=id||'';m.scrollTop=0;$('ov').classList.add('open')}
+function closeM(){$('ov').classList.remove('open');$('md').dataset.kind='';$('md').dataset.id=''}
+const mhead=h=>`<div class="mh"><h2>${h}</h2><button class="ib" onclick="closeM()" aria-label="${t('close')}">✕</button></div>`;
+const stHTML=s=>`<b style="color:var(--${s==='ok'?'ok':s==='low'?'warn':'bad'})">${t('st_'+s)}</b>`;
+function histHTML(i){
+  if(!i.hist?.length)return `<div class="hr"><span>${t('noHistory')}</span></div>`;
+  return i.hist.map(h=>`<div class="hr"><b class="${h.d>0?'p':'m'}">${h.d>0?'+':''}${num(h.d)}</b><span>→ ${num(h.q)} · ${ago(h.t)}</span></div>`).join('');
+}
+function detail(id){
+  const i=items.find(x=>x.id===id);if(!i)return;const s=stock(i),[em,col]=ci(i.cat),u=safeUrl(i.url);
+  showM(`<div style="--c:${col}">${mhead(`${em} <span>${esc(i.name)}</span>`)}
+  ${safeImg(i.img)?`<div class="ph dph${phClass(i)}"><span class="em">${em}</span>${imgHTML(i)}</div>`:''}
+  <div class="qbig"><div><div class="lbl" style="margin:0">${t('qty')}</div><small style="color:var(--tx3)">${t('warnAt',{n:i.low||0})}</small></div>${qCtl(i)}</div>
+  <div class="tiles">
+   <div class="tile"><span>${t('status')}</span><div id="dst">${stHTML(s)}</div></div>
+   <div class="tile"><span>${t('category')}</span><b>${esc(cn(i.cat))}</b></div>
+   <div class="tile"><span>${t('location')}</span><b>${esc(i.loc)||'—'}</b></div>
+   <div class="tile"><span>${t('package')}</span><b>${esc(i.pkg)||'—'}</b></div>
+   <div class="tile"><span>${t('unitPrice')}</span><b>${i.price?money(i.price):'—'}</b></div>
+   <div class="tile"><span>${t('stockVal')}</span><b id="dval">${i.price?money(i.price*i.qty):'—'}</b></div>
+  </div>
+  ${i.desc?`<p class="desc">${esc(i.desc)}</p>`:''}
+  <div class="sec">📈 ${t('history')}</div><div class="hist" id="dhist">${histHTML(i)}</div>
+  <div class="mf" style="justify-content:flex-start">
+   ${u?`<a class="btn sm" target="_blank" rel="noopener" href="${esc(u)}">🔗 ${t('openLink')}</a>`:''}
+   <a class="btn sm" target="_blank" rel="noopener" href="https://www.google.com/search?q=${encodeURIComponent(i.name+' datasheet pdf')}">📄 ${t('dsSearch')}</a>
+   <a class="btn sm" target="_blank" rel="noopener" href="https://www.google.com/search?tbm=shop&q=${encodeURIComponent(i.name)}">🛍️ ${t('buySearch')}</a>
+  </div>
+  <div class="mf"><button class="btn danger" onclick="del(${i.id})">🗑️ ${t('del')}</button><span class="sp"></span><button class="btn" onclick="dup(${i.id})">📑 ${t('dup')}</button><button class="btn pri" onclick="openForm(${i.id})">✏️ ${t('edit')}</button></div></div>`,'detail',i.id);
+}
+function shopList(){
+  const l=items.filter(i=>stock(i)!=='ok').sort((a,b)=>a.qty-b.qty);
+  if(!l.length)return showM(`${mhead('🛒 '+t('shop'))}<div class="empty"><div class="big">🎉</div><h3>${t('noMissing')}</h3><div>${t('noMissingD')}</div></div>`,'shop');
+  const tot=l.reduce((s,i)=>s+needBuy(i)*(i.price||0),0);
+  showM(`${mhead('🛒 '+t('shop'))}<p class="sub" style="margin-bottom:6px">${t('shopHint')}</p>
+  ${l.map((i,k)=>`<div class="buy" style="--c:${ci(i.cat)[1]};--i:${k}"><span class="bi">${ci(i.cat)[0]}</span>
+   <div class="bn"><b>${esc(i.name)}</b><small>${stHTML(stock(i))} · ${t('have',{n:i.qty})}${i.loc?' · 📍 '+esc(i.loc):''}</small></div>
+   <div class="bq">${t('pcs',{n:needBuy(i)})}${i.price?`<small>${money(needBuy(i)*i.price)}</small>`:''}</div>
+   <button class="btn sm ok" onclick="bought(${i.id})">✔ ${t('bought')}</button></div>`).join('')}
+  ${tot?`<div class="total"><span>${t('estTotal')}</span><b>${money(tot)}</b></div>`:''}
+  <div class="mf"><button class="btn" onclick="closeM()">${t('close')}</button><button class="btn pri" onclick="copyList()">📋 ${t('copyList')}</button></div>`,'shop');
+}
+function bought(id){const i=items.find(x=>x.id===id);if(!i)return;applyQty(i,i.qty+needBuy(i));save();qtyUI(i);shopList();toast(t('boughtToast',{n:i.name}))}
+function copyList(){
+  const txt=items.filter(i=>stock(i)!=='ok').map(i=>`- ${i.name}: ${t('pcs',{n:needBuy(i)})}`).join('\n');
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast(t('copied')),()=>prompt('',txt));
+}
+
+/* ===================== Ayarlar + yedek ===================== */
+function openSettings(){
+  const th=document.documentElement.dataset.theme,sz=(ls.get(K_DATA)||'').length*2,lim=5*1024*1024;
+  const fmt=b=>b>1048576?(b/1048576).toFixed(2)+' MB':Math.ceil(b/1024)+' KB';
+  showM(`${mhead('⚙️ '+t('settings'))}<div class="set">
+   <div class="row"><div class="grp" style="flex:1"><div class="lbl">🌐 ${t('language')}</div><select onchange="setLang(this.value)">${[['tr','🇹🇷 Türkçe'],['en','🇬🇧 English'],['de','🇩🇪 Deutsch']].map(([v,l])=>`<option value="${v}"${v===lang?' selected':''}>${l}</option>`).join('')}</select></div>
+   <div class="grp" style="flex:1"><div class="lbl">💱 ${t('currency')}</div><select onchange="cur=this.value;ls.set(K_CUR,cur);render();openSettings()">${Object.entries(CURS).map(([c,s])=>`<option value="${c}"${c===cur?' selected':''}>${s} ${c}</option>`).join('')}</select></div></div>
+   <div class="grp"><div class="lbl">🎨 ${t('theme')}</div><div class="seg" style="display:inline-flex"><button class="${th==='dark'?'on':''}" style="width:auto;padding:0 14px" onclick="setTheme('dark');openSettings()">${t('dark')}</button><button class="${th==='light'?'on':''}" style="width:auto;padding:0 14px" onclick="setTheme('light');openSettings()">${t('light')}</button></div></div>
+   <div class="grp"><div class="lbl">💾 ${t('data')}</div><div class="btns">
+    <button class="btn sm" onclick="exportData()">${t('backup')}</button><button class="btn sm" onclick="$('imp').click()">${t('restore')}</button>
+    <button class="btn sm" onclick="exportCSV()">${t('csv')}</button><button class="btn sm" onclick="items=demo();save();render();autoFill();closeM()">✨ ${t('loadDemo')}</button>
+    <button class="btn sm danger" onclick="clearAll()">${t('clearAll')}</button></div>
+    <div class="usage">${t('usage',{u:fmt(sz)+' / ~5 MB'})}<div class="meter"><i style="width:${Math.min(100,sz/lim*100).toFixed(1)}%"></i></div></div></div>
+  </div>`,'settings');
+}
+function download(name,data,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+const today=()=>new Date().toISOString().slice(0,10);
+function exportData(){save();download(`komponent-depo-${today()}.json`,JSON.stringify(items,null,2),'application/json');toast(t('backupDone'))}
+function exportCSV(){
+  const sep=lang==='en'?',':';',q=v=>`"${String(v??'').replace(/"/g,'""')}"`;
+  const head=[t('f_name').replace(' *',''),t('category'),t('qty'),t('lowL'),t('location'),t('package'),t('unitPrice'),t('stockVal'),t('descL'),'Link'];
+  const rows=items.map(i=>[i.name,cn(i.cat),i.qty,i.low,i.loc,i.pkg,i.price||'',i.price?+(i.price*i.qty).toFixed(2):'',i.desc,i.url]);
+  download(`komponent-depo-${today()}.csv`,'﻿'+[head,...rows].map(r=>r.map(q).join(sep)).join('\r\n'),'text/csv');
+}
+function importData(inp){
+  const f=inp.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{let d=JSON.parse(r.result);if(d&&Array.isArray(d.items))d=d.items;if(!Array.isArray(d))throw 0;
+    if(confirm(t('importQ',{n:d.length}))){items=d.map(migrate);save();render();autoFill();closeM();toast(t('imported'))}}catch(e){toast(t('badFile'))}inp.value=''};
+  r.readAsText(f);
+}
+function clearAll(){if(!confirm(t('clearQ')))return;const bak=items;items=[];save();render();closeM();toast(t('cleared'),t('undo'),()=>{items=bak;save();render();toast(t('restored'))})}
+
+/* ===================== Form + fotoğraf düzenleyici ===================== */
+let F={},tm;
+function openForm(id,pre){
+  const it=id?items.find(x=>x.id===id):null;
+  const d=it||{name:pre||'',cat:guess(pre||'')||'mod',qty:1,low:2,loc:'',price:'',desc:'',img:'',pkg:'',url:'',crop:DEFCROP};
+  F={id:it?it.id:null,img:safeImg(d.img),crop:{...DEFCROP,...d.crop},autoImg:'',catTouched:!!it,noAuto:false,cleared:false};
+  showM(`${mhead(it?'✏️ '+t('editTitle'):'✨ '+t('newPart'))}
+  <div class="f"><label for="f_name">${t('f_name')}</label><input id="f_name" value="${esc(d.name)}" placeholder="${t('f_namePh')}" oninput="onName()" autocomplete="off"><div class="hint" id="dupe"></div></div>
+  <div class="f"><div class="lbl">📷 ${t('photo')}</div>
+   <div class="ph crop" id="crop" tabindex="0" style="--c:${ci(d.cat)[1]}"><span class="em">📷</span><img id="cimg" referrerpolicy="no-referrer" alt="" draggable="false" hidden><div class="cmsg" id="cmsg"></div><div class="guides"></div><div class="drop">⬇️ ${t('dropHere')}</div></div>
+   <div class="ctrl" id="ctrl">
+    <div class="zoom">🔍<input type="range" id="zr" min="0.3" max="4" step="0.01" oninput="setZoom(+this.value)"><b id="zv">100%</b></div>
+    <button class="btn sm icon" title="${t('rotate')}" onclick="F.crop.r=(F.crop.r+90)%360;applyCrop()">↻</button>
+    <button class="btn sm" id="fitB" onclick="F.crop.fit=F.crop.fit==='cover'?'contain':'cover';applyCrop()"></button>
+    <button class="btn sm icon" id="bgB" onclick="F.crop.bg=({w:'d',d:'n',n:'w'})[F.crop.bg]||'w';drawCrop()"></button>
+    <button class="btn sm" onclick="F.crop={...DEFCROP,fit:F.crop.fit,bg:F.crop.bg};applyCrop()">⌖ ${t('reset')}</button>
+    <button class="btn sm danger icon" title="${t('removePhoto')}" onclick="removePhoto()">✕</button>
+   </div>
+   <div class="chint">${t('dragHint')}</div>
+   <div class="sug" id="sug"></div>
+   <div class="urlrow"><input id="f_img" placeholder="${t('urlPh')}" oninput="onUrl(this.value)"><button class="btn sm" style="height:42px" onclick="$('imgFile').click()">📁 ${t('upload')}</button><a class="btn sm icon" style="height:42px;width:42px" id="gimg" target="_blank" rel="noopener" title="${t('webSearch')}" href="${gImg(d.name)}">🌐</a></div>
+  </div>
+  <div class="row"><div class="f" style="min-width:180px"><label for="f_cat">${t('category')} <span class="tag" id="autoT" hidden>${t('auto')}</span></label><select id="f_cat" onchange="F.catTouched=true;$('autoT').hidden=true;$('crop').style.setProperty('--c',ci(this.value)[1])">${Object.keys(CATS).map(k=>`<option value="${k}"${k===d.cat?' selected':''}>${ci(k)[0]} ${esc(cn(k))}</option>`).join('')}</select></div>
+   <div class="f" style="max-width:110px"><label for="f_qty">${t('qty')}</label><input id="f_qty" type="number" min="0" inputmode="numeric" value="${d.qty}"></div>
+   <div class="f" style="max-width:110px"><label for="f_low">${t('lowL')}</label><input id="f_low" type="number" min="0" inputmode="numeric" value="${d.low||0}"></div></div>
+  <div class="row"><div class="f"><label for="f_loc">📍 ${t('location')}</label><input id="f_loc" value="${esc(d.loc)}" placeholder="${t('locPh')}"></div>
+   <div class="f"><label for="f_pkg">▣ ${t('package')}</label><input id="f_pkg" value="${esc(d.pkg)}" placeholder="${t('pkgPh')}"></div></div>
+  <div class="row"><div class="f" style="max-width:170px"><label for="f_price">${t('priceL',{c:CURS[cur]})}</label><input id="f_price" type="number" min="0" step="0.01" inputmode="decimal" value="${d.price||''}"></div>
+   <div class="f"><label for="f_url">🔗 ${t('link')}</label><input id="f_url" type="url" value="${esc(d.url)}" placeholder="https://…"></div></div>
+  <div class="f"><label for="f_desc">📝 ${t('descL')}</label><textarea id="f_desc" placeholder="${t('descPh')}">${esc(d.desc)}</textarea></div>
+  <div class="mf"><button class="btn" onclick="closeM()">${t('cancel')}</button><button class="btn pri" onclick="saveForm()">${it?'💾 '+t('save'):'＋ '+t('add')}</button></div>`,'form',F.id||'','wide');
+  $('cimg').onload=()=>{$('cmsg').hidden=true};
+  $('cimg').onerror=()=>{if(!F.img)return;$('cimg').hidden=true;$('cmsg').hidden=false;$('cmsg').textContent='⚠️ '+t('photoFail')};
+  $('f_name').addEventListener('keydown',e=>{if(e.key==='Enter')saveForm()});
+  bindCrop();drawCrop();
+  if(F.img&&!F.img.startsWith('data:'))$('f_img').value=F.img;
+  if(d.name){onName(true)}
+  setTimeout(()=>$('f_name')?.focus(),60);
+}
+function onName(init){
+  const v=$('f_name').value.trim();
+  const ex=!F.id&&v&&items.find(x=>x.name.toLowerCase()===v.toLowerCase());
+  $('dupe').innerHTML=ex?`⚠️ ${t('exists',{n:esc(ex.name),q:ex.qty})} <button class="lnk" onclick="detail(${ex.id})">${t('openIt')}</button>`:'';
+  if(!F.catTouched&&!init){const g=guess(v);if(g&&g!==$('f_cat').value){$('f_cat').value=g;$('crop').style.setProperty('--c',ci(g)[1])}$('autoT').hidden=!g}
+  $('gimg').href=gImg(v);
+  clearTimeout(tm);tm=setTimeout(searchImgs,init?0:550);
+}
+async function searchImgs(){
+  const sug=$('sug'),q=$('f_name')?.value.trim();if(!sug)return;
+  if(!q||q.length<2){sug.innerHTML='';return}
+  sug.innerHTML=`<span class="spin"></span>&nbsp;${t('searching')}`+'<span class="skel"></span>'.repeat(4);
+  const r=await findImgs(q);
+  if(!$('f_name')||$('f_name').value.trim()!==q)return;
+  if(r===null){sug.textContent='📡 '+t('offline');return}
+  if(!r.length){sug.innerHTML=`🤷 ${t('noPhoto')}`;return}
+  sug.innerHTML=r.map((u,k)=>`<img class="th" style="animation-delay:${k*40}ms" data-u="${esc(u)}" src="${esc(u)}" referrerpolicy="no-referrer" alt="" loading="lazy" onclick="pick(this.dataset.u)" onerror="this.remove()">`).join('');
+  markSel();
+  if((!F.img||F.img===F.autoImg)&&!F.noAuto){
+    const u=await firstOk(r);
+    if(!$('f_name')||$('f_name').value.trim()!==q||F.noAuto||(F.img&&F.img!==F.autoImg))return;
+    if(u){F.autoImg=u;setImg(u)}
+  }
+}
+/* bozuk bağlantıları atla: gerçekten yüklenen ilk fotoğrafı seç */
+function loadable(u,ms=6000){return new Promise(res=>{const im=new Image(),tm=setTimeout(()=>{im.src='';res(false)},ms);im.referrerPolicy='no-referrer';im.onload=()=>{clearTimeout(tm);res(im.naturalWidth>1)};im.onerror=()=>{clearTimeout(tm);res(false)};im.src=u})}
+async function firstOk(list){for(const u of list.slice(0,6))if(await loadable(u))return u;return ''}
+function pick(u){F.noAuto=true;setImg(u)}
+function markSel(){document.querySelectorAll('.th').forEach(e=>e.classList.toggle('sel',e.dataset.u===F.img))}
+function setImg(u,keep){
+  F.img=safeImg(u);F.cleared=!F.img;
+  if(!keep)F.crop={...DEFCROP,fit:F.crop.fit,bg:F.crop.bg};
+  if($('f_img')&&document.activeElement!==$('f_img'))$('f_img').value=F.img&&!F.img.startsWith('data:')?F.img:'';
+  drawCrop();markSel();
+}
+function onUrl(v){v=v.trim();F.noAuto=true;setImg(v)}
+function removePhoto(){F.noAuto=true;setImg('');$('f_img').value=''}
+function drawCrop(){
+  const fr=$('crop');if(!fr)return;
+  fr.className='ph crop'+(F.img?' hasimg bg'+F.crop.bg:'');
+  const im=$('cimg'),m=$('cmsg');
+  if(F.img){if(im.getAttribute('src')!==F.img){m.hidden=false;m.innerHTML='<span class="spin"></span>';im.src=F.img}im.hidden=false}
+  else{im.removeAttribute('src');im.hidden=true;m.hidden=false;m.textContent=t('photoHint')}
+  $('ctrl').classList.toggle('off',!F.img);
+  $('bgB').textContent={w:'⬜',d:'⬛',n:'🎨'}[F.crop.bg]||'⬜';$('bgB').title=t('bg'+F.crop.bg);
+  applyCrop();
+}
+function applyCrop(){
+  const im=$('cimg');if(!im)return;im.style.cssText=cropCss(F.crop);
+  $('zr').value=F.crop.z;$('zv').textContent=Math.round(F.crop.z*100)+'%';
+  $('fitB').textContent=F.crop.fit==='cover'?'⤢ '+t('fitCover'):'⤡ '+t('fitContain');
+}
+function setZoom(z){F.crop.z=+clamp(z,.3,4).toFixed(2);applyCrop()}
+function bindCrop(){
+  const fr=$('crop');let st=null;
+  fr.addEventListener('pointerdown',e=>{if(!F.img||e.button>0)return;st={x:e.clientX,y:e.clientY,cx:F.crop.x,cy:F.crop.y,w:fr.clientWidth,h:fr.clientHeight};fr.setPointerCapture(e.pointerId);fr.classList.add('drag')});
+  fr.addEventListener('pointermove',e=>{if(!st)return;
+    let x=st.cx+(e.clientX-st.x)/st.w*100,y=st.cy+(e.clientY-st.y)/st.h*100;
+    if(Math.abs(x)<2.5)x=0;if(Math.abs(y)<2.5)y=0; /* merkeze yapışır */
+    F.crop.x=+clamp(x,-100,100).toFixed(1);F.crop.y=+clamp(y,-100,100).toFixed(1);applyCrop()});
+  const end=()=>{st=null;fr.classList.remove('drag')};
+  fr.addEventListener('pointerup',end);fr.addEventListener('pointercancel',end);
+  fr.addEventListener('wheel',e=>{if(!F.img)return;e.preventDefault();setZoom(F.crop.z*(e.deltaY<0?1.07:1/1.07))},{passive:false});
+  fr.addEventListener('dblclick',()=>{if(F.img){F.crop={...DEFCROP,fit:F.crop.fit,bg:F.crop.bg};applyCrop()}});
+  fr.addEventListener('keydown',e=>{if(!F.img)return;const m={ArrowLeft:[-2,0],ArrowRight:[2,0],ArrowUp:[0,-2],ArrowDown:[0,2]}[e.key];
+    if(m){e.preventDefault();F.crop.x=clamp(F.crop.x+m[0],-100,100);F.crop.y=clamp(F.crop.y+m[1],-100,100);applyCrop()}
+    else if(e.key==='+'||e.key==='=')setZoom(F.crop.z*1.07);else if(e.key==='-')setZoom(F.crop.z/1.07)});
+  fr.addEventListener('dragover',e=>{e.preventDefault();fr.classList.add('over')});
+  fr.addEventListener('dragleave',()=>fr.classList.remove('over'));
+  fr.addEventListener('drop',e=>{e.preventDefault();fr.classList.remove('over');
+    const f=e.dataTransfer.files[0];if(f)return readImg(f);
+    const u=(e.dataTransfer.getData('text/uri-list')||e.dataTransfer.getData('text/plain')||'').split('\n')[0].trim();if(safeImg(u)){F.noAuto=true;setImg(u)}});
+}
+document.addEventListener('paste',e=>{
+  if($('md').dataset.kind!=='form')return;
+  const it=[...(e.clipboardData?.items||[])].find(x=>x.type.startsWith('image/'));
+  if(it){e.preventDefault();readImg(it.getAsFile())}
+});
+function readImg(f){
+  if(!f||!/^image\//.test(f.type)||!$('crop'))return;
+  const u=URL.createObjectURL(f),im=new Image();
+  im.onload=()=>{
+    const s=Math.min(1,800/Math.max(im.width,im.height)),c=document.createElement('canvas');
+    c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+    let d=c.toDataURL('image/webp',.82);if(!d.startsWith('data:image/webp'))d=c.toDataURL('image/jpeg',.85);
+    URL.revokeObjectURL(u);F.noAuto=true;setImg(d);toast('📷 '+t('uploaded'));
+  };
+  im.onerror=()=>{URL.revokeObjectURL(u);toast(t('photoFail'))};
+  im.src=u;
+}
+function saveForm(){
+  const name=$('f_name').value.trim();if(!name){toast(t('nameReq'));$('f_name').focus();return}
+  const o={name,cat:$('f_cat').value,qty:Math.max(0,parseInt($('f_qty').value)||0),low:Math.max(0,parseInt($('f_low').value)||0),loc:$('f_loc').value.trim(),
+    pkg:$('f_pkg').value.trim(),price:parseFloat($('f_price').value)||0,url:$('f_url').value.trim(),desc:$('f_desc').value.trim(),img:F.img,crop:{...F.crop}};
+  const id=F.id;
+  if(id){
+    const it=items.find(x=>x.id===id);if(!it)return;
+    const q=o.qty;delete o.qty;Object.assign(it,o,{noimg:o.img?0:(F.cleared?1:it.noimg)});applyQty(it,q);it.upd=Date.now();
+  }else{
+    items.push(migrate({...o,id:Date.now(),upd:Date.now(),noimg:F.cleared&&F.noAuto?1:0},0));
+  }
+  if(!save())return;closeM();render();toast(id?'💾 '+t('saved'):'✨ '+t('added',{n:name}));autoFill();
+}
+
+/* ===================== Otomatik fotoğraf bulma ===================== */
+const IC={};
+async function jget(u,ms=8000){
+  const c=new AbortController(),tm=setTimeout(()=>c.abort(),ms);
+  try{const r=await fetch(u,{signal:c.signal});if(!r.ok)throw 0;return await r.json()}finally{clearTimeout(tm)}
+}
+const pagesOf=o=>Object.values(o?.query?.pages||{}).sort((a,b)=>(a.index||0)-(b.index||0));
+async function findImgs(q){
+  q=q.trim();const key=q.toLowerCase();if(IC[key])return IC[key];
+  const w=q.split(/\s+/),tries=[...new Set([q,w.slice(0,2).join(' '),w[0]])].filter(x=>x.length>=2);
+  let all=[],fails=0,calls=0;
+  for(const s of tries){
+    const e=encodeURIComponent(s),wiki=h=>jget(`https://${h}.wikipedia.org/w/api.php?action=query&generator=search&gsrlimit=6&gsrsearch=${e}&prop=pageimages&piprop=thumbnail&pithumbsize=600&format=json&origin=*`).then(o=>pagesOf(o).map(p=>p.thumbnail?.source));
+    const src=[
+      wiki('en'),
+      jget(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrlimit=12&gsrsearch=${encodeURIComponent(s+' filetype:bitmap')}&prop=imageinfo&iiprop=url|mime&iiurlwidth=600&format=json&origin=*`)
+        .then(o=>pagesOf(o).map(p=>p.imageinfo?.[0]).filter(x=>x&&/image\/(jpeg|png|webp)/.test(x.mime)).map(x=>x.thumburl||x.url)),
+      jget(`https://api.openverse.org/v1/images/?q=${e}&page_size=10&mature=false`).then(o=>(o.results||[]).map(r=>r.thumbnail||r.url)),
+      lang!=='en'?wiki(lang):Promise.resolve([])
+    ];
+    const res=await Promise.allSettled(src);calls+=res.length;fails+=res.filter(r=>r.status==='rejected').length;
+    const [a,b,c,d]=res.map(r=>r.status==='fulfilled'?(r.value||[]).filter(Boolean):[]);
+    all=[...new Set([...all,...a.slice(0,3),...d.slice(0,2),...b.slice(0,4),...c.slice(0,4),...a.slice(3),...b.slice(4),...c.slice(4),...d.slice(2)])];
+    if(all.length>=4)break;
+  }
+  if(!all.length&&fails===calls)return null;
+  return IC[key]=all.slice(0,12);
+}
+async function autoFill(){
+  if(filling)return;filling=true;
+  for(const i of items){
+    if(i.img||i.noimg)continue;
+    const r=await findImgs(i.name);if(r===null)break;
+    const u=r.length?await firstOk(r):'';
+    if(!items.includes(i)||i.img)continue;
+    if(u)i.img=u;else i.noimg=1;
+    save();refreshCard(i.id);
+  }
+  filling=false;
+}
+
+/* ===================== Bildirim + efektler + kısayollar ===================== */
+function toast(m,act,fn){
+  const el=$('toast');el.innerHTML='';const s=document.createElement('span');s.textContent=m;el.appendChild(s);
+  if(act){const b=document.createElement('button');b.textContent=act;b.onclick=()=>{el.classList.remove('show');fn()};el.appendChild(b)}
+  el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),act?5500:2400);
+}
+document.addEventListener('pointerdown',e=>{
+  const b=e.target.closest('.btn,.chip,.qb,.ib,.seg button');if(!b)return;
+  const r=b.getBoundingClientRect(),s=Math.max(r.width,r.height),sp=document.createElement('span');
+  sp.className='rip';sp.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-r.left-s/2}px;top:${e.clientY-r.top-s/2}px`;
+  b.appendChild(sp);setTimeout(()=>sp.remove(),650);
+});
+document.addEventListener('keydown',e=>{
+  const typing=/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName),open=!!$('md').dataset.kind;
+  if(e.key==='Escape'){if(open)closeM();else if(document.activeElement===$('q')){$('q').value='';onSearch();$('q').blur()}}
+  if(typing||open||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(e.key==='/'){e.preventDefault();$('q').focus()}
+  else if(e.key==='n'||e.key==='N'){e.preventDefault();openForm()}
+});
+load();
+</script>
+</body>
+</html>
