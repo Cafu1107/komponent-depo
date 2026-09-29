@@ -4,6 +4,8 @@ All notable changes to Komponent Depo. Dates are YYYY-MM-DD.
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-09-29
+
 ### Added
 - **Command palette** (<kbd>Ctrl</kbd>/<kbd>⌘</kbd> <kbd>K</kbd>): jump to any part or project, filter, switch theme or language, print labels, back up.
 - **Projects**: parts lists with need vs. have per part, coverage cells, “ready to build ×N”, and **Build ×1** that takes the parts out of stock (with undo). Shortages of planned projects appear in the shopping list.
@@ -24,5 +26,6 @@ All notable changes to Komponent Depo. Dates are YYYY-MM-DD.
 
 First public version: parts with photos found by name, photo editor, shopping list, stock history, three languages.
 
-[Unreleased]: https://github.com/Cafu1107/komponent-depo/commits/main
+[Unreleased]: https://github.com/Cafu1107/komponent-depo/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/Cafu1107/komponent-depo/releases/tag/v2.0.0
 [1.0.0]: https://github.com/Cafu1107/komponent-depo/commits/549b6d7
