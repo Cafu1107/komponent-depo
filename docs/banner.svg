@@ -1,43 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" font-family="Segoe UI, system-ui, -apple-system, Roboto, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" font-family="Segoe UI Variable Text, Segoe UI, system-ui, -apple-system, Roboto, sans-serif">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#15122b"/>
-      <stop offset="1" stop-color="#0c0a1d"/>
-    </linearGradient>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#8b5cf6"/>
-      <stop offset=".5" stop-color="#6366f1"/>
-      <stop offset="1" stop-color="#22d3ee"/>
-    </linearGradient>
-    <radialGradient id="b1"><stop offset="0" stop-color="#8b5cf6" stop-opacity=".55"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></radialGradient>
-    <radialGradient id="b2"><stop offset="0" stop-color="#22d3ee" stop-opacity=".45"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
-    <radialGradient id="b3"><stop offset="0" stop-color="#ff5fa2" stop-opacity=".3"/><stop offset="1" stop-color="#ff5fa2" stop-opacity="0"/></radialGradient>
-    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#b4a5ff" stroke-opacity=".06"/></pattern>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#ffffff" stroke-opacity=".035"/></pattern>
+    <radialGradient id="lit" cx=".35" cy=".3" r=".7"><stop offset="0" stop-color="#ffe1a8"/><stop offset=".55" stop-color="#f2a93b"/></radialGradient>
   </defs>
-  <rect width="1280" height="360" rx="28" fill="url(#bg)"/>
-  <rect width="1280" height="360" rx="28" fill="url(#grid)"/>
-  <circle cx="120" cy="40" r="300" fill="url(#b1)"/>
-  <circle cx="1200" cy="60" r="280" fill="url(#b2)"/>
-  <circle cx="760" cy="420" r="260" fill="url(#b3)"/>
+  <rect width="1280" height="360" rx="24" fill="#0f1012"/>
+  <rect width="1280" height="360" rx="24" fill="url(#grid)"/>
+  <rect x=".5" y=".5" width="1279" height="359" rx="23.5" fill="none" stroke="#ffffff" stroke-opacity=".08"/>
 
-  <!-- devre izleri -->
-  <g stroke="url(#g)" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55">
-    <path d="M880 70h90l30 30h120"/><path d="M900 290h70l40-40h150"/><path d="M1000 180h180"/>
-  </g>
-  <g fill="#22d3ee"><circle cx="1120" cy="100" r="7"/><circle cx="1160" cy="250" r="7"/><circle cx="1180" cy="180" r="7"/></g>
-  <g fill="#8b5cf6"><circle cx="880" cy="70" r="7"/><circle cx="900" cy="290" r="7"/><circle cx="1000" cy="180" r="7"/></g>
-  <!-- çip -->
-  <g transform="translate(1030 140)">
-    <g stroke="#a78bfa" stroke-width="4" stroke-linecap="round">
-      <path d="M-40 -18h-14M-40 0h-14M-40 18h-14M40 -18h14M40 0h14M40 18h14M-18 -40v-14M0 -40v-14M18 -40v-14M-18 40v14M0 40v14M18 40v14"/>
-    </g>
-    <rect x="-40" y="-40" width="80" height="80" rx="12" fill="#201c3d" stroke="url(#g)" stroke-width="3"/>
-    <text x="0" y="11" text-anchor="middle" font-size="30">🔧</text>
+  <!-- logo: IC package with a lit indicator -->
+  <g transform="translate(80 96)" stroke="#ececee" stroke-width="5" stroke-linecap="round" fill="none">
+    <rect x="22" y="22" width="68" height="68" rx="15"/>
+    <path d="M40 4v18M72 4v18M40 90v18M72 90v18M4 40h18M4 72h18M90 40h18M90 72h18"/>
+    <circle cx="56" cy="56" r="12" fill="url(#lit)" stroke="none"/>
   </g>
 
-  <rect x="80" y="92" width="88" height="88" rx="24" fill="url(#g)"/>
-  <text x="124" y="152" text-anchor="middle" font-size="44">🔧</text>
-  <text x="196" y="150" font-size="64" font-weight="800" fill="#f3f0ff" letter-spacing="-1.5">Komponent <tspan fill="url(#g)">Depo</tspan></text>
-  <text x="82" y="232" font-size="27" fill="#b3abd6">Count, find and restock your electronic parts.</text>
-  <text x="82" y="270" font-size="20" fill="#7a72a3">One HTML file · zero dependencies · English · Türkçe · Deutsch</text>
+  <text x="236" y="160" font-size="62" font-weight="700" fill="#ececee" letter-spacing="-1.8">Komponent Depo</text>
+  <text x="238" y="206" font-size="24" fill="#a8a8b0">Inventory for electronic parts. Photos found by name,</text>
+  <text x="238" y="238" font-size="24" fill="#a8a8b0">projects, QR labels. One HTML file, no account.</text>
+
+  <!-- readout strip -->
+  <g transform="translate(238 272)" font-size="15" fill="#8f8f99">
+    <rect width="600" height="48" rx="10" fill="#141517" stroke="#ffffff" stroke-opacity=".08"/>
+    <circle cx="22" cy="24" r="5" fill="#3ecf8e"/><text x="36" y="29" fill="#ececee" font-weight="600">130</text><text x="72" y="29">pieces</text>
+    <path d="M150 12v24" stroke="#ffffff" stroke-opacity=".1"/>
+    <circle cx="172" cy="24" r="5" fill="#f28c3b"/><text x="186" y="29" fill="#ececee" font-weight="600">2</text><text x="202" y="29">low</text>
+    <path d="M254 12v24" stroke="#ffffff" stroke-opacity=".1"/>
+    <circle cx="276" cy="24" r="5" fill="#f0506e"/><text x="290" y="29" fill="#ececee" font-weight="600">1</text><text x="304" y="29">out</text>
+    <path d="M354 12v24" stroke="#ffffff" stroke-opacity=".1"/>
+    <g transform="translate(376 20)"><rect width="18" height="8" rx="2" fill="#3ecf8e"/><rect x="22" width="18" height="8" rx="2" fill="#3ecf8e"/><rect x="44.75" y=".75" width="16.5" height="6.5" rx="1.5" fill="none" stroke="#f0506e" stroke-width="1.5"/><rect x="66" width="18" height="8" rx="2" fill="#3ecf8e"/></g>
+    <text x="474" y="29">robot: 3 / 4</text>
+  </g>
+
+  <!-- right: languages + key hint -->
+  <g font-size="15" fill="#8f8f99" text-anchor="end">
+    <text x="1200" y="72">EN · TR · DE</text>
+  </g>
+  <g transform="translate(1068 282)" font-family="Cascadia Mono, SF Mono, Consolas, monospace" font-size="15" fill="#a8a8b0">
+    <rect width="76" height="34" rx="7" fill="#1f2024" stroke="#ffffff" stroke-opacity=".12"/><text x="38" y="22" text-anchor="middle">Ctrl K</text>
+  </g>
+  <rect x="1156" y="282" width="44" height="34" rx="9" fill="#f2a93b"/>
+  <path d="M1178 291v16M1170 299h16" stroke="#1c1304" stroke-width="2.5" stroke-linecap="round"/>
 </svg>

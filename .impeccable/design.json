@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-29T20:40:00Z",
+  "title": "Design System: Komponent Depo",
+  "extensions": {
+    "colorMeta": {
+      "graphite-ground": { "role": "neutral", "displayName": "Graphite Ground", "tonalRamp": ["#0a0b0c", "#0f1012", "#141517", "#17181b", "#1f2024", "#2a2b30", "#3a3b41", "#55565e"] },
+      "solder-amber": { "role": "primary", "displayName": "Solder Amber", "tonalRamp": ["#3a2503", "#5c3b06", "#955b00", "#c77d0a", "#f2a93b", "#ffbb55", "#ffd28a", "#ffe8c2"] },
+      "led-green": { "role": "tertiary", "displayName": "LED Green", "tonalRamp": ["#06301f", "#0a4a30", "#0e9a61", "#27b87a", "#3ecf8e", "#6fdcaa", "#a3e9c8", "#d4f5e5"] },
+      "led-orange": { "role": "tertiary", "displayName": "LED Orange", "tonalRamp": ["#3d1c05", "#6a320a", "#cf6419", "#e27a2a", "#f28c3b", "#f6a86a", "#f9c59c", "#fce2cd"] },
+      "led-red": { "role": "tertiary", "displayName": "LED Red", "tonalRamp": ["#3d0a14", "#6b1224", "#d32848", "#e33d5d", "#f0506e", "#f47d94", "#f8a9b8", "#fbd4dc"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "tonalRamp": ["#55565e", "#6c6c75", "#8f8f99", "#a8a8b0", "#c4c4ca", "#dadadf", "#ececee", "#f7f7f8"] },
+      "paper-ground": { "role": "neutral", "displayName": "Paper Ground", "tonalRamp": ["#c9c9c4", "#dadad6", "#e5e5e0", "#f0f0ec", "#f6f6f4", "#fcfcfb", "#ffffff", "#ffffff"] }
+    },
+    "typographyMeta": {
+      "headline": { "displayName": "Headline", "purpose": "View titles (Projects)." },
+      "title": { "displayName": "Title", "purpose": "Part names on cards, sheet titles." },
+      "readout": { "displayName": "Readout", "purpose": "Status-strip values and the quantity stepper; tabular numerals." },
+      "body": { "displayName": "Body", "purpose": "Descriptions and notes, max ~65ch." },
+      "label": { "displayName": "Label", "purpose": "Field labels, meta lines, sheet section labels." },
+      "code-tag": { "displayName": "Code tag", "purpose": "Location codes on screen and on printed QR labels." }
+    },
+    "shadows": [
+      { "name": "floating", "value": "0 28px 70px -18px rgba(0,0,0,.75), 0 4px 12px -4px rgba(0,0,0,.4)", "purpose": "Sheets, command palette, bulk bar, toast." },
+      { "name": "raised", "value": "0 14px 32px -14px rgba(0,0,0,.7), 0 2px 6px -2px rgba(0,0,0,.45)", "purpose": "Project picker dropdown." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Default for entering UI, press feedback, stagger, tab underline." },
+      { "name": "ease-drawer", "value": "cubic-bezier(0.32, 0.72, 0, 1)", "purpose": "Sheets sliding in (360ms); exit 200ms ease-out." },
+      { "name": "ease-in-out", "value": "cubic-bezier(0.77, 0, 0.175, 1)", "purpose": "On-screen movement." },
+      { "name": "press", "value": "transform scale(.97) 100ms", "purpose": "Every pressable." },
+      { "name": "stagger", "value": "22ms per card, 280ms rise", "purpose": "Grid re-render after a filter, category, sort or view change only." },
+      { "name": "out-blink", "value": "1.6s steps(1,end) infinite, opacity .28 at 50%", "purpose": "Out-of-stock light; disabled under reduced motion." }
+    ],
+    "breakpoints": [
+      { "name": "compact-header", "value": "860px" },
+      { "name": "phone", "value": "640px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one amber action per view (New part, Add, Build).",
+      "html": "<button class=\"ds-btn-primary\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg>New part</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 12px;border:0;border-radius:9px;background:#f2a93b;color:#1c1304;font:550 13.5px system-ui,sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(0,0,0,.25);cursor:pointer;transition:background-color .15s ease,transform .1s cubic-bezier(.23,1,.32,1)}.ds-btn-primary:hover{background:#ffbb55}.ds-btn-primary:active{transform:scale(.97)}.ds-btn-primary:focus-visible{outline:2px solid #f2a93b;outline-offset:2px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Every other action; quiet graphite with a 1px rule.",
+      "html": "<button class=\"ds-btn\">Duplicate</button>",
+      "css": ".ds-btn{height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.11);border-radius:9px;background:#17181b;color:#ececee;font:550 13.5px system-ui,sans-serif;cursor:pointer;transition:background-color .15s ease,border-color .15s ease,transform .1s cubic-bezier(.23,1,.32,1)}.ds-btn:hover{background:#1f2024;border-color:rgba(255,255,255,.2)}.ds-btn:active{transform:scale(.97)}.ds-btn:focus-visible{outline:2px solid #f2a93b;outline-offset:2px}"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Graphite field with amber focus ring.",
+      "html": "<input class=\"ds-input\" placeholder=\"Search parts, categories, locations, notes…\">",
+      "css": ".ds-input{height:34px;padding:0 10px;width:320px;border:1px solid rgba(255,255,255,.11);border-radius:9px;background:#17181b;color:#ececee;font:13.5px system-ui,sans-serif;caret-color:#f2a93b;outline:none;transition:border-color .15s ease,box-shadow .15s ease}.ds-input::placeholder{color:#8f8f99}.ds-input:focus{border-color:rgba(242,169,59,.5);box-shadow:0 0 0 3px rgba(242,169,59,.14)}"
+    },
+    {
+      "name": "Category Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Filter chip with a category swatch and count.",
+      "html": "<button class=\"ds-chip\" aria-pressed=\"true\"><i class=\"ds-sw\"></i>Sensor<small>2</small></button>",
+      "css": ".ds-chip{height:30px;padding:0 10px;border:1px solid rgba(255,255,255,.11);border-radius:9px;background:transparent;color:#a8a8b0;font:500 13px system-ui,sans-serif;display:inline-flex;align-items:center;gap:7px;cursor:pointer}.ds-chip[aria-pressed=true]{background:#1f2024;border-color:rgba(255,255,255,.2);color:#ececee}.ds-chip small{color:#8f8f99}.ds-sw{width:8px;height:8px;border-radius:2px;background:#5fbf93}"
+    },
+    {
+      "name": "Stock Light",
+      "kind": "custom",
+      "refersTo": "led",
+      "description": "Indicator for stock state: lit green / orange / red, designed unlit ghost.",
+      "html": "<span class=\"ds-led ok\"></span> <span class=\"ds-led low\"></span> <span class=\"ds-led out\"></span> <span class=\"ds-led\"></span>",
+      "css": ".ds-led{display:inline-block;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.075);box-shadow:inset 0 0 0 1px rgba(255,255,255,.11)}.ds-led.ok{background:radial-gradient(circle at 35% 30%,#a3e9c8 0,#3ecf8e 55%);box-shadow:inset 0 0 0 1px #2b9064}.ds-led.low{background:radial-gradient(circle at 35% 30%,#f9c59c 0,#f28c3b 55%);box-shadow:inset 0 0 0 1px #a96229}.ds-led.out{background:radial-gradient(circle at 35% 30%,#f8a9b8 0,#f0506e 55%);box-shadow:inset 0 0 0 1px #a8384d}"
+    },
+    {
+      "name": "Location Code Tag",
+      "kind": "custom",
+      "refersTo": "code-tag",
+      "description": "Stenciled location code, identical on screen and on printed labels.",
+      "html": "<span class=\"ds-code\">Drawer A</span>",
+      "css": ".ds-code{font:600 10.5px/1 ui-monospace,Consolas,monospace;letter-spacing:.04em;text-transform:uppercase;padding:3px 5px;border:1px solid rgba(255,255,255,.11);border-radius:4px;color:#a8a8b0;background:#1f2024}"
+    },
+    {
+      "name": "Quantity Stepper",
+      "kind": "custom",
+      "refersTo": "stepper",
+      "description": "Minus / count / plus capsule; count changes instantly, tabular numerals.",
+      "html": "<div class=\"ds-q\"><button>−</button><span>12</span><button>+</button></div>",
+      "css": ".ds-q{display:inline-flex;align-items:center;border:1px solid rgba(255,255,255,.11);border-radius:9px;background:#17181b;overflow:hidden}.ds-q button{width:30px;height:30px;border:0;background:none;color:#a8a8b0;font:600 16px system-ui,sans-serif;cursor:pointer}.ds-q button:hover{background:#1f2024;color:#ececee}.ds-q button:active{background:#2a2b30}.ds-q span{width:46px;text-align:center;font:650 14px system-ui,sans-serif;font-variant-numeric:tabular-nums;color:#ececee;border-left:1px solid rgba(255,255,255,.07);border-right:1px solid rgba(255,255,255,.07);line-height:30px}"
+    },
+    {
+      "name": "Top Bar Tabs",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Parts / Projects tabs with a sliding amber underline.",
+      "html": "<nav class=\"ds-tabs\"><button aria-selected=\"true\">Parts <small>6</small></button><button aria-selected=\"false\">Projects <small>1</small></button></nav>",
+      "css": ".ds-tabs{display:flex;gap:2px;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:8px}.ds-tabs button{height:34px;padding:0 10px;border:0;border-radius:6px;background:none;color:#a8a8b0;font:550 13.5px system-ui,sans-serif;cursor:pointer}.ds-tabs button small{color:#8f8f99}.ds-tabs button[aria-selected=true]{color:#ececee;box-shadow:inset 0 -2px 0 #f2a93b}.ds-tabs button:hover{background:#1f2024;color:#ececee}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Bench Instrument",
+    "overview": "Komponent Depo is drawn as the front panel of a piece of bench equipment, not as a web dashboard. The inventory reads as ruled rows of labeled drawers: every count sits in fixed tabular slots, and every stock state is a small indicator light. Unlit states are designed too. The surface is calm graphite with fine one-pixel rules and a single warm accent, solder amber, spent only on the primary action, the current selection and keyboard focus. Motion is fast and functional.",
+    "keyCharacteristics": [
+      "Graphite ground, 1px ruled panels, one amber accent.",
+      "Stock state as indicator lights (green / orange / red) with designed unlit ghosts.",
+      "Tabular numerals everywhere a count appears; monospace only for location codes.",
+      "Authored 1.5px-stroke line icons; circuit-symbol icons for categories.",
+      "Dark and light themes share the same structure; light swaps graphite for paper."
+    ],
+    "rules": [
+      { "name": "The One Amber Rule", "body": "Amber marks what you can act on next or what is selected. If it is neither, it isn't amber.", "section": "colors" },
+      { "name": "The Signal Colors Rule", "body": "Green, orange and red mean stock state. They are never used as brand color, decoration or chart palette.", "section": "colors" },
+      { "name": "The Tabular Rule", "body": "Every count, price and readout uses tabular numerals; digits never shift width as they change.", "section": "typography" },
+      { "name": "The Flat Panel Rule", "body": "Cards don't lift on hover; their rule brightens. Only layers that float above the page cast a shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep amber for the primary action, selection and focus only.",
+      "Do show stock state with the indicator light and level cells, including their unlit ghost state.",
+      "Do use tabular numerals for every count and price.",
+      "Do use the authored line-icon set (1.5–1.6px stroke) and circuit-symbol category icons.",
+      "Do slide sheets with the drawer curve cubic-bezier(0.32,0.72,0,1) and keep other UI motion at 150–250ms ease-out.",
+      "Do gate hover styles behind (hover:hover) and (pointer:fine) and respect reduced motion."
+    ],
+    "donts": [
+      "Don't use emoji or Unicode glyphs as icons.",
+      "Don't lift cards on hover or give resting surfaces shadows.",
+      "Don't put glowing halos around the stock lights; they are lit by a highlight and a rim.",
+      "Don't use gradient text, rainbow gradients or a second accent color.",
+      "Don't animate the command palette or other keyboard-triggered actions.",
+      "Don't mark selection with a thick colored stripe on one side of a row; outline it."
+    ]
+  }
+}
